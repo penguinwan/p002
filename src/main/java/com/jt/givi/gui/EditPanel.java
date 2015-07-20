@@ -33,6 +33,7 @@ public class EditPanel extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -48,22 +49,35 @@ public class EditPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 255, 255));
-        setPreferredSize(new java.awt.Dimension(600, 385));
-        setLayout(new java.awt.GridBagLayout());
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        setPreferredSize(new java.awt.Dimension(600, 500));
+        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
+        layout.columnWidths = new int[] {590};
+        layout.rowHeights = new int[] {80, 370, 40};
+        setLayout(layout);
+
+        jPanel3.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel3.setPreferredSize(new java.awt.Dimension(600, 80));
+        jPanel3.setLayout(new java.awt.GridLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Edit Machine");
         jLabel1.setFocusable(false);
         jLabel1.setPreferredSize(new java.awt.Dimension(600, 35));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        add(jLabel1, gridBagConstraints);
+        jPanel3.add(jLabel1);
 
-        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        add(jPanel3, gridBagConstraints);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 320));
         jPanel1.setLayout(new java.awt.GridLayout(5, 2, 5, 5));
 
@@ -131,21 +145,29 @@ public class EditPanel extends javax.swing.JPanel {
         jPanel2.setPreferredSize(new java.awt.Dimension(600, 30));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("Tab = Navigate");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("Tab=Navigate");
         jLabel3.setFocusable(false);
         jPanel2.add(jLabel3);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel2.setText("Up/Down = Select");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Up/Down=Select");
         jLabel2.setFocusable(false);
         jPanel2.add(jLabel2);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setText("F9=Save");
+        jPanel2.add(jLabel4);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setText("Esc=Cancel");
+        jPanel2.add(jLabel5);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_END;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         add(jPanel2, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -166,11 +188,14 @@ public class EditPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField txtActual;
     private javax.swing.JTextField txtMultiply;
     private javax.swing.JTextField txtTarget;
