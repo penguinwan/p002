@@ -189,8 +189,7 @@ public class EditPanel extends javax.swing.JPanel {
     private void cmbMachineNoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbMachineNoItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             Object item = evt.getItem();
-            int selectedMachineNo = (Integer.valueOf(item.toString()) - 1);
-            Machine selectedMachine = null;
+            int selectedMachineNo = Integer.valueOf(item.toString());
             for (Machine machine : machineList) {
                 if (machine.getMachineNo() == selectedMachineNo) {
                     setSelectedMold(machine.getMold().getPartNo());
