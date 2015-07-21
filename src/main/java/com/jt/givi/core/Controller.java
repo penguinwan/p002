@@ -53,6 +53,14 @@ public class Controller {
         return masterSetupManager.load();
     }
 
+    public List<Machine> getMachineList() {
+        List<Machine> machineList = new ArrayList<Machine>();
+        for (int i = 0; i < machineTableModel.getListModel().size(); i++) {
+            machineList.add((Machine) machineTableModel.getListModel().get(i));
+        }
+        return machineList;
+    }
+
     public void saveMasterSetup() throws IOException, ParseException {
         List<Mold> moldList = new ArrayList<Mold>();
         for (Object obj : masterSetupTableModel.getListModel().toArray()) {
@@ -62,12 +70,17 @@ public class Controller {
         masterSetupManager.save(moldList);
     }
 
-    public void saveMachine(int machineNo, Mold selectedMold, int target, int actual) {
+    public void resetMachine(int machineNo, Mold selectedMold, int target, int actual) {
         int row = machineNo - 1;
         machineTableModel.setValueAt(selectedMold.getPartNo(), row, Machine.Column.PART_NO.getIndex());
         machineTableModel.setValueAt(target, row, Machine.Column.TARGET.getIndex());
         machineTableModel.setValueAt(actual, row, Machine.Column.ACTUAL.getIndex());
         machineTableModel.setValueAt(selectedMold.getMultiply(), row, Machine.Column.MULTIPLY.getIndex());
+    }
+
+    public void saveMachineState() throws Exception {
+        List<Machine> machineList = getMachineList();
+        stateManager.save(machineList);
     }
 
 

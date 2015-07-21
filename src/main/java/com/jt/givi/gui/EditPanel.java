@@ -5,6 +5,7 @@
  */
 package com.jt.givi.gui;
 
+import com.jt.givi.model.Machine;
 import com.jt.givi.model.Mold;
 
 import java.awt.event.ItemEvent;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class EditPanel extends javax.swing.JPanel {
     private List<Mold> moldList;
+    private List<Machine> machineList;
 
     /**
      * Creates new form EditPanel
@@ -62,7 +64,7 @@ public class EditPanel extends javax.swing.JPanel {
 
         jPanel3.setBackground(new java.awt.Color(204, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(600, 80));
-        jPanel3.setLayout(new java.awt.GridLayout());
+        jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -89,6 +91,11 @@ public class EditPanel extends javax.swing.JPanel {
         cmbMachineNo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         cmbMachineNo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
         cmbMachineNo.setPreferredSize(new java.awt.Dimension(250, 60));
+        cmbMachineNo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbMachineNoItemStateChanged(evt);
+            }
+        });
         jPanel1.add(cmbMachineNo);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -179,6 +186,22 @@ public class EditPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cmbPartNoItemStateChanged
 
+    private void cmbMachineNoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbMachineNoItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            Object item = evt.getItem();
+            int selectedMachineNo = (Integer.valueOf(item.toString()) - 1);
+            Machine selectedMachine = null;
+            for (Machine machine : machineList) {
+                if (machine.getMachineNo() == selectedMachineNo) {
+                    setSelectedMold(machine.getMold().getPartNo());
+                    txtTarget.setText(String.valueOf(machine.getTarget()));
+                    txtActual.setText(String.valueOf(machine.getActual()));
+                }
+            }
+
+        }
+    }//GEN-LAST:event_cmbMachineNoItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbMachineNo;
@@ -214,19 +237,25 @@ public class EditPanel extends javax.swing.JPanel {
         return (Mold) cmbPartNo.getSelectedItem();
     }
 
+    private void setSelectedMold(String partNo) {
+        for (int i = 0; i < cmbPartNo.getItemCount(); i++) {
+            Mold mold = (Mold) cmbPartNo.getModel().getElementAt(i);
+            if (mold.getPartNo().equals(partNo)) {
+                cmbPartNo.setSelectedIndex(i);
+            }
+        }
+    }
+
     public String getTarget() {
         return txtTarget.getText();
     }
 
-    public void setMoldList(List<Mold> moldList) {
+    public void showPanel(List<Mold> moldList, List<Machine> machineList) {
         this.moldList = moldList;
+        this.machineList = machineList;
         cmbPartNo.setModel(new javax.swing.DefaultComboBoxModel(moldList.toArray()));
-        if (moldList.size() > 0) {
-            txtMultiply.setText(moldList.get(0).getMultiply());
-        }
-    }
-
-    public void initFocus() {
+        cmbMachineNo.setSelectedIndex(0);
+        setVisible(true);
         cmbMachineNo.requestFocus();
     }
 }

@@ -12,6 +12,8 @@ import com.jt.givi.model.Mold;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -62,6 +64,7 @@ public class Frame extends javax.swing.JFrame {
         masterSetupPanel.setVisible(false);
 
         setupInputMap();
+        addOnCloseListener();
     }
 
     private void setupInputMap() {
@@ -78,6 +81,18 @@ public class Frame extends javax.swing.JFrame {
         am.put("F7", new F7Action(this));
         am.put("F9", new F9Action(this));
         am.put("ESC", new EscAction(this));
+    }
+
+    private void addOnCloseListener() {
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                try {
+                    controller.saveMachineState();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -166,9 +181,7 @@ public class Frame extends javax.swing.JFrame {
             EditPanel editPanel = frame.editPanel;
             if (!editPanel.isVisible()) {
                 try {
-                    editPanel.setMoldList(controller.getMoldList());
-                    editPanel.setVisible(true);
-                    editPanel.initFocus();
+                    editPanel.showPanel(controller.getMoldList(), controller.getMachineList());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -212,7 +225,7 @@ public class Frame extends javax.swing.JFrame {
                     int machineNo = Integer.valueOf(frame.editPanel.getMachineNo());
                     int target = Integer.valueOf(frame.editPanel.getTarget());
                     int actual = Integer.valueOf(frame.editPanel.getActual());
-                    controller.saveMachine(machineNo, selectedMold, target, actual);
+                    controller.resetMachine(machineNo, selectedMold, target, actual);
 
                     frame.mainPanel.updateUI();
                     frame.editPanel.setVisible(false);
