@@ -22,15 +22,18 @@ import java.util.List;
 public class Controller {
     public static final String MASTER_FILE_PATH = "C:/temp/master.csv";
     public static final String STATE_FILE_PATH = "C:/temp/state.csv";
+    public static final String LOG_FILE_PATH = "C:/temp";
 
     private MasterSetupManager masterSetupManager;
     private StateManager stateManager;
+    private StorageManager storageManager;
     private MasterSetupTableModel masterSetupTableModel;
     private MachineTableModel machineTableModel;
 
     public Controller() throws IOException, ParseException {
         masterSetupManager = new MasterSetupManager(MASTER_FILE_PATH);
         stateManager = new StateManager(STATE_FILE_PATH);
+        storageManager = new StorageManager(LOG_FILE_PATH);
         initMasterSetupTableModel();
         initMachineTableModel();
     }
@@ -76,6 +79,13 @@ public class Controller {
         machineTableModel.setValueAt(target, row, Machine.Column.TARGET.getIndex());
         machineTableModel.setValueAt(actual, row, Machine.Column.ACTUAL.getIndex());
         machineTableModel.setValueAt(selectedMold.getMultiply(), row, Machine.Column.MULTIPLY.getIndex());
+
+        try {
+            Machine resetMachine = (Machine) machineTableModel.getListModel().get(row);
+            storageManager.writeLog(resetMachine, "Part Reset");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void saveMachineState() throws Exception {

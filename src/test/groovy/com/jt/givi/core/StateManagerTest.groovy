@@ -10,7 +10,7 @@ import org.junit.Test
  * Created by superman on 7/18/2015.
  */
 class StateManagerTest {
-    @Test
+    //@Test
     void testLoad() {
         URL url = StateManagerTest.classLoader.getResource('state.csv')
         StateManager mgr = new StateManager(url.getPath())
@@ -19,7 +19,7 @@ class StateManagerTest {
         println jsonBuilder.toPrettyString()
     }
 
-    @Test
+    //@Test
     void testSave() {
         def filePath = 'C:\\temp\\state.csv';
         def machineList = [

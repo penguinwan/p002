@@ -35,6 +35,10 @@ public class Status {
                 return NONE;
             }
         }
+
+        public String getName() {
+            return name;
+        }
     }
 
     private State state;
@@ -63,6 +67,6 @@ public class Status {
 
     @Override
     public String toString() {
-        return Util.dateToString(lastChanged);
+        return Util.timeToString(lastChanged);
     }
 }
