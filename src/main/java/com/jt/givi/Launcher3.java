@@ -1,5 +1,6 @@
 package com.jt.givi;
 
+import com.jt.givi.core.Controller;
 import com.jt.givi.gui.Frame;
 import com.jt.givi.model.MachineTableModel;
 import com.jt.givi.model.MasterSetupTableModel;
@@ -47,7 +48,7 @@ public class Launcher3 {
 
                     Frame frame = new Frame(controller, masterSetupTableModel, machineTableModel);
 
-                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
+                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(11);
                     UpdateMachineTask machine1 = new UpdateMachineTask(controller, frame, 1);
                     UpdateMachineTask machine2 = new UpdateMachineTask(controller, frame, 2);
                     UpdateMachineTask machine3 = new UpdateMachineTask(controller, frame, 3);
@@ -69,6 +70,9 @@ public class Launcher3 {
                     scheduler.scheduleAtFixedRate(machine8, 24, 10, TimeUnit.SECONDS);
                     scheduler.scheduleAtFixedRate(machine9, 26, 10, TimeUnit.SECONDS);
                     scheduler.scheduleAtFixedRate(machine10, 28, 10, TimeUnit.SECONDS);
+
+                    LogMachineTask logMachine = new LogMachineTask(controller);
+                    scheduler.scheduleAtFixedRate(logMachine, 0, 10, TimeUnit.MINUTES);
 
                     frame.setVisible(true);
 
@@ -95,6 +99,22 @@ public class Launcher3 {
             try {
                 controller.updateMachine(machineNo);
                 frame.updateMainPanel();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private static class LogMachineTask implements Runnable {
+        Controller controller;
+
+        LogMachineTask(Controller controller) {
+            this.controller = controller;
+        }
+
+        public void run() {
+            try {
+                controller.logMachine();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

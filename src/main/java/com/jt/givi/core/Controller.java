@@ -151,6 +151,13 @@ public class Controller {
         machineTableModel.setValueAt(valueContainer.getValue(), row, Machine.Column.ACTUAL.getIndex());
     }
 
+    public void logMachine() throws IOException, InterruptedException {
+        List<Machine> machineList = getMachineList();
+        for (Machine machine : machineList) {
+            storageManager.writeLog(machine, "");
+        }
+    }
+
     public MasterSetupTableModel getMasterSetupTableModel() {
         return masterSetupTableModel;
     }
