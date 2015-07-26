@@ -19,6 +19,8 @@ public class MainPanel extends javax.swing.JPanel {
         initComponents();
 
         tablePanel1.getTable().setModel(machineTableModel);
+        TableColumnAdjuster tca = new TableColumnAdjuster(tablePanel1.getTable());
+        tca.adjustColumns();
     }
 
     /**

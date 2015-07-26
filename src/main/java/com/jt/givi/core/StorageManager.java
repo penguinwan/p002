@@ -16,6 +16,10 @@ import java.util.List;
  * Created by superman on 7/21/2015.
  */
 public class StorageManager {
+    public static final String REMARK_STATUS_CHANGED = "Status Changed ";
+    public static final String REMARK_PART_RESET = "Part Reset ";
+    public static final String REMARK_ACTUAL_MODIFIED = "Actual Modified ";
+
     private static final String FILE_NAME_FORMAT = "%s-machine-%s.log";
     private static final String[] LOG_FILE_HEADER = new String[]{
             LogHeader.DATE.getName(),

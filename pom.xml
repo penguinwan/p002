@@ -58,7 +58,7 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
-                            <mainClass>com.jt.givi.gui.Frame</mainClass>
+                            <mainClass>com.jt.givi.Launcher3</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>

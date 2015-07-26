@@ -95,6 +95,10 @@ public class Frame extends javax.swing.JFrame {
         });
     }
 
+    public void updateMainPanel() {
+        mainPanel.updateUI();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -227,7 +231,7 @@ public class Frame extends javax.swing.JFrame {
                     int actual = Integer.valueOf(frame.editPanel.getActual());
                     controller.resetMachine(machineNo, selectedMold, target, actual);
 
-                    frame.mainPanel.updateUI();
+                    frame.updateMainPanel();
                     frame.editPanel.setVisible(false);
                 } catch (Exception ex) {
                     ex.printStackTrace();

@@ -67,6 +67,6 @@ public class Status {
 
     @Override
     public String toString() {
-        return Util.timeToString(lastChanged);
+        return Util.dateTimeToString(lastChanged);
     }
 }

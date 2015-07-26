@@ -47,7 +47,7 @@ public class StateManager {
 
             Status status = new Status(
                     Status.State.forName(strStatus),
-                    Util.timeFromString(strLastChanged));
+                    Util.dateTimeFromString(strLastChanged));
 
             Mold mold = new Mold(partNo, multiply);
             Machine machine = new Machine(machineNo, mold, target, actual, status);
@@ -69,7 +69,7 @@ public class StateManager {
             line[Machine.Column.ACTUAL.getIndex()] = String.valueOf(machine.getActual());
             line[Machine.Column.MULTIPLY.getIndex()] = machine.getMold().getMultiply();
             line[Machine.Column.STATUS.getIndex()] = machine.getStatus().getState().toString();
-            line[Machine.Column.LAST_CHANGED.getIndex()] = Util.timeToString(machine.getStatus().getLastChanged());
+            line[Machine.Column.LAST_CHANGED.getIndex()] = Util.dateTimeToString(machine.getStatus().getLastChanged());
             content.add(line);
         }
 

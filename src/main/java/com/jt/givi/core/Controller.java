@@ -6,27 +6,31 @@
 package com.jt.givi.core;
 
 import com.jgoodies.binding.list.ArrayListModel;
-import com.jt.givi.model.Machine;
-import com.jt.givi.model.MachineTableModel;
-import com.jt.givi.model.MasterSetupTableModel;
-import com.jt.givi.model.Mold;
+import com.jt.givi.model.*;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author superman
  */
 public class Controller {
+//    public static final String MASTER_FILE_PATH = "/media/share/master.csv";
+//    public static final String STATE_FILE_PATH = "/media/share/state.csv";
+//    public static final String LOG_FILE_PATH = "/media/share";
     public static final String MASTER_FILE_PATH = "C:/temp/master.csv";
     public static final String STATE_FILE_PATH = "C:/temp/state.csv";
-    public static final String LOG_FILE_PATH = "C:/temp";
+    public static final String LOG_FILE_PATH = "C/temp";
+    public static final int SERIAL_TIMEOUT = 8000;
 
     private MasterSetupManager masterSetupManager;
     private StateManager stateManager;
     private StorageManager storageManager;
+    private PiCommunicationManager piCommunicationManager;
     private MasterSetupTableModel masterSetupTableModel;
     private MachineTableModel machineTableModel;
 
@@ -34,6 +38,7 @@ public class Controller {
         masterSetupManager = new MasterSetupManager(MASTER_FILE_PATH);
         stateManager = new StateManager(STATE_FILE_PATH);
         storageManager = new StorageManager(LOG_FILE_PATH);
+        piCommunicationManager = new PiCommunicationManager(SERIAL_TIMEOUT);
         initMasterSetupTableModel();
         initMachineTableModel();
     }
@@ -57,7 +62,7 @@ public class Controller {
     }
 
     public List<Machine> getMachineList() {
-        List<Machine> machineList = new ArrayList<Machine>();
+        List<Machine> machineList = new ArrayList<>();
         for (int i = 0; i < machineTableModel.getListModel().size(); i++) {
             machineList.add((Machine) machineTableModel.getListModel().get(i));
         }
@@ -75,16 +80,43 @@ public class Controller {
 
     public void resetMachine(int machineNo, Mold selectedMold, int target, int actual) {
         int row = machineNo - 1;
+
+        String remark = "";
+        boolean actualHasChange = false;
+        boolean partNoHasChange = false;
+
+        Machine currentMachine = (Machine) machineTableModel.getListModel().get(row);
+        Mold currentMold = currentMachine.getMold();
+
+        if(currentMachine.getActual() != actual) {
+            actualHasChange = true;
+            remark += StorageManager.REMARK_ACTUAL_MODIFIED;
+        }
+
+        if (!selectedMold.getPartNo().equals(currentMold.getPartNo())) {
+            partNoHasChange = true;
+            remark += StorageManager.REMARK_PART_RESET;
+        }
+
         machineTableModel.setValueAt(selectedMold.getPartNo(), row, Machine.Column.PART_NO.getIndex());
         machineTableModel.setValueAt(target, row, Machine.Column.TARGET.getIndex());
         machineTableModel.setValueAt(actual, row, Machine.Column.ACTUAL.getIndex());
         machineTableModel.setValueAt(selectedMold.getMultiply(), row, Machine.Column.MULTIPLY.getIndex());
 
-        try {
-            Machine resetMachine = (Machine) machineTableModel.getListModel().get(row);
-            storageManager.writeLog(resetMachine, "Part Reset");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (actualHasChange || partNoHasChange) {
+            try {
+                storageManager.writeLog(currentMachine, remark);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if (actualHasChange) {
+            piCommunicationManager.adjust(machineNo, actual);
+        }
+
+        if (partNoHasChange) {
+            piCommunicationManager.reset(machineNo);
         }
     }
 
@@ -93,6 +125,31 @@ public class Controller {
         stateManager.save(machineList);
     }
 
+    public void updateMachineValue(int machineNo) throws InterruptedException, TimeoutException, IOException {
+        ValueContainer valueContainer = piCommunicationManager.getValue(machineNo);
+        System.out.println(String.format("Communication return value:%d state:%s", valueContainer.getValue(), valueContainer.getState().getName()));
+
+        int row = machineNo - 1;
+
+        Machine updatedMachine = (Machine) machineTableModel.getListModel().get(row);
+        Status currentStatus = (Status) machineTableModel.getValueAt(row, Machine.Column.STATUS.getIndex());
+        Status.State currentState = currentStatus.getState();
+        Status.State newState = valueContainer.getState();
+
+        if (!newState.equals(currentState)) {
+            // reset datetime
+            Status newStatus = new Status(newState, Calendar.getInstance().getTime());
+            machineTableModel.setValueAt(newStatus, row, Machine.Column.STATUS.getIndex());
+
+            // log state change
+            String remark = StorageManager.REMARK_STATUS_CHANGED;
+            storageManager.writeLog(updatedMachine, remark);
+        }
+        int counter = valueContainer.getValue();
+        //TODO: change multiply to integer
+        //int value = counter * updatedMachine.getMold().getMultiply();
+        machineTableModel.setValueAt(valueContainer.getValue(), row, Machine.Column.ACTUAL.getIndex());
+    }
 
     public MasterSetupTableModel getMasterSetupTableModel() {
         return masterSetupTableModel;
