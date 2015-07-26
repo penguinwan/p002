@@ -5,17 +5,35 @@
  */
 package com.jt.givi.gui;
 
+import com.jgoodies.binding.list.ArrayListModel;
+import com.jt.givi.model.MasterSetupTableModel;
+import com.jt.givi.model.Mold;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JFrame;
+import javax.swing.KeyStroke;
+
 /**
  *
  * @author superman
  */
 public class MasterSetupPanel extends javax.swing.JPanel {
 
+    private MasterSetupTableModel model;
+
     /**
      * Creates new form MasterSetupPanel
      */
-    public MasterSetupPanel() {
+    public MasterSetupPanel(MasterSetupTableModel model) {
         initComponents();
+        this.model = model;
+
+        masterTable.setModel(model);
+        setupInputMap();
     }
 
     /**
@@ -26,59 +44,171 @@ public class MasterSetupPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        masterTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
 
-        setBackground(new java.awt.Color(153, 255, 153));
-        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
-        setLayout(new java.awt.GridLayout(4, 2, 5, 5));
+        setBackground(new java.awt.Color(204, 255, 255));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        setPreferredSize(new java.awt.Dimension(600, 500));
+        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
+        layout.columnWidths = new int[] {590};
+        layout.rowHeights = new int[] {80, 370, 40};
+        setLayout(layout);
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
-        jLabel4.setText("Master Setup");
-        add(jLabel4);
-        add(jLabel5);
+        jPanel2.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(600, 80));
+        jPanel2.setLayout(new java.awt.GridLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Operation");
-        add(jLabel1);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Master Setup");
+        jLabel1.setPreferredSize(new java.awt.Dimension(200, 35));
+        jPanel2.add(jLabel1);
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "New", "Existing" }));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(250, 60));
-        add(jComboBox1);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        add(jPanel2, gridBagConstraints);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel3.setText("Part No");
-        add(jLabel3);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(600, 320));
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextField1.setPreferredSize(new java.awt.Dimension(250, 60));
-        add(jTextField1);
+        masterTable.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        masterTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        masterTable.setRowHeight(25);
+        jScrollPane1.setViewportView(masterTable);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel2.setText("Multiply\n(eg: 1,2,3,4...)");
-        add(jLabel2);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_END;
+        add(jScrollPane1, gridBagConstraints);
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        add(jTextField2);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 0));
+        jPanel1.setPreferredSize(new java.awt.Dimension(600, 30));
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Insert=Add Row");
+        jPanel1.add(jLabel2);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("Delete=Delete Row");
+        jPanel1.add(jLabel3);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setText("F9=Save");
+        jLabel4.setToolTipText("");
+        jPanel1.add(jLabel4);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel5.setText("Esc=Cancel");
+        jPanel1.add(jLabel5);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable masterTable;
     // End of variables declaration//GEN-END:variables
+
+    public void addRow() {
+        ((MasterSetupTableModel) masterTable.getModel()).addRow();
+    }
+
+    public void deleteSelectedRow() {
+        if (masterTable.getSelectedRow() != -1) {
+            ((MasterSetupTableModel) masterTable.getModel()).removeRow(masterTable.getSelectedRow());
+        }
+    }
+
+    public void initFocus() {
+        masterTable.requestFocus();
+    }
+
+    private void setupInputMap() {
+        System.out.println("setting master setup input map...");
+        InputMap im = masterTable.getInputMap(WHEN_FOCUSED);
+        ActionMap am = masterTable.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "DEL");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0), "INS");
+        am.put("DEL", new DeleteAction(this));
+        am.put("INS", new InsertAction(this));
+    }
+
+    private class DeleteAction extends AbstractAction {
+
+        private MasterSetupPanel panel;
+
+        public DeleteAction(MasterSetupPanel panel) {
+            this.panel = panel;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            panel.deleteSelectedRow();
+        }
+    }
+
+    private class InsertAction extends AbstractAction {
+
+        private MasterSetupPanel panel;
+
+        public InsertAction(MasterSetupPanel panel) {
+            this.panel = panel;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            panel.addRow();
+        }
+    }
+
+    public static void main(String[] a) {
+        JFrame f = new JFrame("Abstract TableModel Example");
+        f.setDefaultCloseOperation(2);
+
+        ArrayListModel listModel = new ArrayListModel();
+        listModel.add(new Mold("a", "2"));
+        listModel.add(new Mold("b", "4"));
+
+        MasterSetupTableModel tableModel = new MasterSetupTableModel(listModel);
+        MasterSetupPanel panel = new MasterSetupPanel(tableModel);
+        f.add(panel);
+        f.pack();
+        f.setVisible(true);
+    }
+
 }

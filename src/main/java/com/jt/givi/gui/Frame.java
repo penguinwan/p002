@@ -30,7 +30,7 @@ public class Frame extends javax.swing.JFrame {
 
     private JPanel mainPanel;
     private EditPanel editPanel;
-    private MasterSetupPanel2 masterSetupPanel;
+    private MasterSetupPanel masterSetupPanel;
     private Controller controller;
 
     /**
@@ -57,7 +57,7 @@ public class Frame extends javax.swing.JFrame {
         getLayeredPane().add(editPanel, new Integer(2));
         editPanel.setVisible(false);
 
-        masterSetupPanel = new MasterSetupPanel2(masterSetupTableModel);
+        masterSetupPanel = new MasterSetupPanel(masterSetupTableModel);
         masterSetupPanel.setSize(masterSetupPanel.getPreferredSize());
         masterSetupPanel.setFocusable(false);
         getLayeredPane().add(masterSetupPanel, new Integer(3));
@@ -205,7 +205,7 @@ public class Frame extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             frame.editPanel.setVisible(false);
 
-            MasterSetupPanel2 panel = frame.masterSetupPanel;
+            MasterSetupPanel panel = frame.masterSetupPanel;
             if (!panel.isVisible()) {
                 panel.setVisible(true);
                 panel.initFocus();
