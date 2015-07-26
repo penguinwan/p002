@@ -24,7 +24,7 @@ public class Controller {
 //    public static final String LOG_FILE_PATH = "/media/share";
     public static final String MASTER_FILE_PATH = "C:/temp/master.csv";
     public static final String STATE_FILE_PATH = "C:/temp/state.csv";
-    public static final String LOG_FILE_PATH = "C/temp";
+    public static final String LOG_FILE_PATH = "C:/temp";
     public static final int SERIAL_TIMEOUT = 8000;
 
     private MasterSetupManager masterSetupManager;
@@ -120,12 +120,12 @@ public class Controller {
         }
     }
 
-    public void saveMachineState() throws Exception {
+    public void onClose() throws Exception {
         List<Machine> machineList = getMachineList();
         stateManager.save(machineList);
     }
 
-    public void updateMachineValue(int machineNo) throws InterruptedException, TimeoutException, IOException {
+    public void updateMachine(int machineNo) throws InterruptedException, TimeoutException, IOException {
         ValueContainer valueContainer = piCommunicationManager.getValue(machineNo);
         System.out.println(String.format("Communication return value:%d state:%s", valueContainer.getValue(), valueContainer.getState().getName()));
 

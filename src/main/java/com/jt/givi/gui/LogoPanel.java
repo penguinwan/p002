@@ -5,6 +5,13 @@
  */
 package com.jt.givi.gui;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  *
  * @author superman
@@ -16,6 +23,15 @@ public class LogoPanel extends javax.swing.JPanel {
      */
     public LogoPanel() {
         initComponents();
+        try {
+            InputStream imageStream = LogoPanel.class.getResourceAsStream("/logo.jpg");
+            BufferedImage myPicture = ImageIO.read(imageStream);
+            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+            picLabel.setBackground(Color.WHITE);
+            logoPanel.add(picLabel);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -27,12 +43,36 @@ public class LogoPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(255, 0, 0));
+        logoPanel = new javax.swing.JPanel();
+        wordingPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1360, 100));
-        setLayout(new java.awt.GridLayout(1, 2));
+        java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
+        layout.columnWidths = new int[] {263, 1103};
+        setLayout(layout);
+
+        logoPanel.setOpaque(false);
+        add(logoPanel, new java.awt.GridBagConstraints());
+
+        wordingPanel.setOpaque(false);
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 76)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel1.setText("Monitoring System");
+        jLabel1.setFocusable(false);
+        jLabel1.setOpaque(true);
+        wordingPanel.add(jLabel1);
+
+        add(wordingPanel, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel logoPanel;
+    private javax.swing.JPanel wordingPanel;
     // End of variables declaration//GEN-END:variables
 }

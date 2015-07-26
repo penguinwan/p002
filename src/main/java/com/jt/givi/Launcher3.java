@@ -4,7 +4,6 @@ import com.jt.givi.gui.Frame;
 import com.jt.givi.model.MachineTableModel;
 import com.jt.givi.model.MasterSetupTableModel;
 
-import javax.swing.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +47,7 @@ public class Launcher3 {
 
                     Frame frame = new Frame(controller, masterSetupTableModel, machineTableModel);
 
-                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(10);
                     UpdateMachineTask machine1 = new UpdateMachineTask(controller, frame, 1);
                     UpdateMachineTask machine2 = new UpdateMachineTask(controller, frame, 2);
                     UpdateMachineTask machine3 = new UpdateMachineTask(controller, frame, 3);
@@ -94,7 +93,7 @@ public class Launcher3 {
         @Override
         public void run() {
             try {
-                controller.updateMachineValue(machineNo);
+                controller.updateMachine(machineNo);
                 frame.updateMainPanel();
             } catch (Exception ex) {
                 ex.printStackTrace();
