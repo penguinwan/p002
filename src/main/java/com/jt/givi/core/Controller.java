@@ -102,6 +102,7 @@ public class Controller {
         machineTableModel.setValueAt(target, row, Machine.Column.TARGET.getIndex());
         machineTableModel.setValueAt(actual, row, Machine.Column.ACTUAL.getIndex());
         machineTableModel.setValueAt(selectedMold.getMultiply(), row, Machine.Column.MULTIPLY.getIndex());
+        machineTableModel.fireTableDataChanged();
 
         if (actualHasChange || partNoHasChange) {
             try {
@@ -145,10 +146,12 @@ public class Controller {
             String remark = StorageManager.REMARK_STATUS_CHANGED;
             storageManager.writeLog(updatedMachine, remark);
         }
+
         int counter = valueContainer.getValue();
         //TODO: change multiply to integer
         //int value = counter * updatedMachine.getMold().getMultiply();
         machineTableModel.setValueAt(valueContainer.getValue(), row, Machine.Column.ACTUAL.getIndex());
+        machineTableModel.fireTableDataChanged();
     }
 
     public void logMachine() throws IOException, InterruptedException {

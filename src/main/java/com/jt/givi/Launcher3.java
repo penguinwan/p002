@@ -49,18 +49,18 @@ public class Launcher3 {
                     Frame frame = new Frame(controller, masterSetupTableModel, machineTableModel);
 
                     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(11);
-                    UpdateMachineTask machine1 = new UpdateMachineTask(controller, frame, 1);
-                    UpdateMachineTask machine2 = new UpdateMachineTask(controller, frame, 2);
-                    UpdateMachineTask machine3 = new UpdateMachineTask(controller, frame, 3);
-                    UpdateMachineTask machine4 = new UpdateMachineTask(controller, frame, 4);
-                    UpdateMachineTask machine5 = new UpdateMachineTask(controller, frame, 5);
-                    UpdateMachineTask machine6 = new UpdateMachineTask(controller, frame, 6);
-                    UpdateMachineTask machine7 = new UpdateMachineTask(controller, frame, 7);
-                    UpdateMachineTask machine8 = new UpdateMachineTask(controller, frame, 8);
-                    UpdateMachineTask machine9 = new UpdateMachineTask(controller, frame, 9);
-                    UpdateMachineTask machine10 = new UpdateMachineTask(controller, frame, 10);
+                    UpdateMachineTask machine1 = new UpdateMachineTask(controller, 1);
+                    UpdateMachineTask machine2 = new UpdateMachineTask(controller, 2);
+                    UpdateMachineTask machine3 = new UpdateMachineTask(controller, 3);
+                    UpdateMachineTask machine4 = new UpdateMachineTask(controller, 4);
+                    UpdateMachineTask machine5 = new UpdateMachineTask(controller, 5);
+                    UpdateMachineTask machine6 = new UpdateMachineTask(controller, 6);
+                    UpdateMachineTask machine7 = new UpdateMachineTask(controller, 7);
+                    UpdateMachineTask machine8 = new UpdateMachineTask(controller, 8);
+                    UpdateMachineTask machine9 = new UpdateMachineTask(controller, 9);
+                    UpdateMachineTask machine10 = new UpdateMachineTask(controller, 10);
 
-                    scheduler.scheduleAtFixedRate(machine1, 3, 10, TimeUnit.SECONDS);
+                    scheduler.scheduleAtFixedRate(machine1, 10, 10, TimeUnit.SECONDS);
                     scheduler.scheduleAtFixedRate(machine2, 12, 10, TimeUnit.SECONDS);
                     scheduler.scheduleAtFixedRate(machine3, 14, 10, TimeUnit.SECONDS);
                     scheduler.scheduleAtFixedRate(machine4, 16, 10, TimeUnit.SECONDS);
@@ -85,12 +85,10 @@ public class Launcher3 {
 
     private static final class UpdateMachineTask implements Runnable {
         private com.jt.givi.core.Controller controller;
-        private Frame frame;
         private int machineNo;
 
-        UpdateMachineTask(com.jt.givi.core.Controller controller, Frame frame, int machineNo) {
+        UpdateMachineTask(com.jt.givi.core.Controller controller, int machineNo) {
             this.controller = controller;
-            this.frame = frame;
             this.machineNo = machineNo;
         }
 
@@ -98,7 +96,6 @@ public class Launcher3 {
         public void run() {
             try {
                 controller.updateMachine(machineNo);
-                frame.updateMainPanel();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
