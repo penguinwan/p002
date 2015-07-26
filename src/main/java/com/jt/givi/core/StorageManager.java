@@ -7,10 +7,11 @@ import com.jt.givi.util.Util;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by superman on 7/21/2015.
@@ -58,9 +59,13 @@ public class StorageManager {
     }
 
     private String logFileFolder;
+    private BlockingQueue<Message> queue;
 
     public StorageManager(String logFileFolder) {
         this.logFileFolder = logFileFolder;
+        this.queue = new LinkedBlockingQueue<>();
+        LogWriter writer = new LogWriter(this, queue);
+        new Thread(writer).start();
     }
 
     protected File getLogFile(String machineNo) throws IOException {
@@ -82,7 +87,14 @@ public class StorageManager {
         return logFile;
     }
 
-    public void writeLog(Machine machine, String remarks) throws IOException {
+    public void writeLog(Machine machine, String remarks) throws IOException, InterruptedException {
+        Message message = new Message();
+        message.machine = machine;
+        message.remark = remarks;
+        queue.put(message);
+    }
+
+    void logToFile(Machine machine, String remarks) throws IOException {
         Date now = Calendar.getInstance().getTime();
         String[] content = new String[LOG_FILE_HEADER.length];
         content[LogHeader.DATE.getIndex()] = Util.dateToString(now);
@@ -100,5 +112,36 @@ public class StorageManager {
         CSVWriter csvWriter = new CSVWriter(new FileWriter(logFile, true));
         csvWriter.writeAll(contentList);
         csvWriter.close();
+    }
+
+    private static class Message {
+        Machine machine;
+        String remark;
+    }
+
+    private static class LogWriter implements Runnable {
+        private BlockingQueue<Message> inputQueue;
+        private StorageManager storageManager;
+
+        LogWriter(StorageManager storageManager, BlockingQueue<Message> inputQueue) {
+            this.storageManager = storageManager;
+            this.inputQueue = inputQueue;
+        }
+
+        public void run() {
+            try {
+                while (true) {
+                    Message message = inputQueue.take();
+                    Machine machine = message.machine;
+                    String remarks = message.remark;
+
+                    storageManager.logToFile(machine, remarks);
+                }
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
