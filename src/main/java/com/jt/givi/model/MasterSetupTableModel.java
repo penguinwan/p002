@@ -37,10 +37,10 @@ public class MasterSetupTableModel extends AbstractTableAdapter {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) throws NumberFormatException {
-        int multiply = Integer.valueOf(aValue.toString());
         if (columnIndex == 0) {
             ((Mold) listModel.get(rowIndex)).setPartNo(aValue.toString());
         } else {
+            int multiply = Integer.valueOf(aValue.toString());
             ((Mold) listModel.get(rowIndex)).setMultiply(multiply);
         }
     }
