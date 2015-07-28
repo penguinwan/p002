@@ -19,26 +19,20 @@ import java.util.concurrent.TimeoutException;
  * @author superman
  */
 public class Controller {
-//    public static final String MASTER_FILE_PATH = "/media/share/master.csv";
-//    public static final String STATE_FILE_PATH = "/media/share/state.csv";
-//    public static final String LOG_FILE_PATH = "/media/share";
-    public static final String MASTER_FILE_PATH = "C:/temp/master.csv";
-    public static final String STATE_FILE_PATH = "C:/temp/state.csv";
-    public static final String LOG_FILE_PATH = "C:/temp";
-    public static final int SERIAL_TIMEOUT = 8000;
-
     private MasterSetupManager masterSetupManager;
     private StateManager stateManager;
     private StorageManager storageManager;
     private PiCommunicationManager piCommunicationManager;
+    private ConfigManager configManager;
     private MasterSetupTableModel masterSetupTableModel;
     private MachineTableModel machineTableModel;
 
     public Controller() throws IOException, ParseException {
-        masterSetupManager = new MasterSetupManager(MASTER_FILE_PATH);
-        stateManager = new StateManager(STATE_FILE_PATH);
-        storageManager = new StorageManager(LOG_FILE_PATH);
-        piCommunicationManager = new PiCommunicationManager(SERIAL_TIMEOUT);
+        configManager = new ConfigManager();
+        masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
+        stateManager = new StateManager(configManager.stateFilePath);
+        storageManager = new StorageManager(configManager.logFolderPath);
+        piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout);
         initMasterSetupTableModel();
         initMachineTableModel();
     }
