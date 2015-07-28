@@ -148,9 +148,8 @@ public class Controller {
         }
 
         int counter = valueContainer.getValue();
-        //TODO: change multiply to integer
-        //int value = counter * updatedMachine.getMold().getMultiply();
-        machineTableModel.setValueAt(valueContainer.getValue(), row, Machine.Column.ACTUAL.getIndex());
+        int value = counter * updatedMachine.getMold().getMultiply();
+        machineTableModel.setValueAt(value, row, Machine.Column.ACTUAL.getIndex());
         machineTableModel.fireTableDataChanged();
     }
 

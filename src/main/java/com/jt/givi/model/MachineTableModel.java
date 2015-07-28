@@ -52,9 +52,7 @@ public class MachineTableModel extends AbstractTableAdapter {
     }
 
     @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        super.setValueAt(aValue, rowIndex, columnIndex);
-
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) throws NumberFormatException {
         Machine machine = (Machine) listModel.get(rowIndex);
         if (columnIndex == Machine.Column.PART_NO.getIndex()) {
             machine.getMold().setPartNo((String) aValue);
@@ -63,7 +61,7 @@ public class MachineTableModel extends AbstractTableAdapter {
         } else if (columnIndex == Machine.Column.ACTUAL.getIndex()) {
             machine.setActual((Integer) aValue);
         } else if (columnIndex == Machine.Column.MULTIPLY.getIndex()) {
-            machine.getMold().setMultiply((String) aValue);
+            machine.getMold().setMultiply((Integer) aValue);
         } else if (columnIndex == Machine.Column.STATUS.getIndex()) {
             machine.setStatus((Status) aValue);
         } else {

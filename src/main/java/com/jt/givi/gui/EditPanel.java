@@ -182,7 +182,7 @@ public class EditPanel extends javax.swing.JPanel {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             Object item = evt.getItem();
             Mold selectedMold = (Mold) item;
-            txtMultiply.setText(selectedMold.getMultiply());
+            txtMultiply.setText(String.valueOf(selectedMold.getMultiply()));
         }
     }//GEN-LAST:event_cmbPartNoItemStateChanged
 

@@ -36,12 +36,12 @@ public class MasterSetupTableModel extends AbstractTableAdapter {
     }
 
     @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        //super.setValueAt(aValue, rowIndex, columnIndex);
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) throws NumberFormatException {
+        int multiply = Integer.valueOf(aValue.toString());
         if (columnIndex == 0) {
             ((Mold) listModel.get(rowIndex)).setPartNo(aValue.toString());
         } else {
-            ((Mold) listModel.get(rowIndex)).setMultiply(aValue.toString());
+            ((Mold) listModel.get(rowIndex)).setMultiply(multiply);
         }
     }
 
@@ -50,7 +50,7 @@ public class MasterSetupTableModel extends AbstractTableAdapter {
     }
 
     public void addRow() {
-        listModel.add(new Mold("", ""));
+        listModel.add(new Mold("", 0));
     }
 
     @Override

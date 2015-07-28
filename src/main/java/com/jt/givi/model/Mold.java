@@ -11,9 +11,9 @@ package com.jt.givi.model;
 public class Mold {
 
     private String partNo;
-    private String multiply;
+    private int multiply;
 
-    public Mold(String partNo, String multiply) {
+    public Mold(String partNo, int multiply) {
         this.partNo = partNo;
         this.multiply = multiply;
     }
@@ -26,11 +26,11 @@ public class Mold {
         this.partNo = partNo;
     }
 
-    public String getMultiply() {
+    public int getMultiply() {
         return multiply;
     }
 
-    public void setMultiply(String multiply) {
+    public void setMultiply(int multiply) {
         this.multiply = multiply;
     }
 

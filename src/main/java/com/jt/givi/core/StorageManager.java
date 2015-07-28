@@ -102,7 +102,7 @@ public class StorageManager {
         content[LogHeader.PART_NO.getIndex()] = machine.getMold().getPartNo();
         content[LogHeader.TARGET.getIndex()] = String.valueOf(machine.getTarget());
         content[LogHeader.ACTUAL.getIndex()] = String.valueOf(machine.getActual());
-        content[LogHeader.MULTIPLIER.getIndex()] = machine.getMold().getMultiply();
+        content[LogHeader.MULTIPLIER.getIndex()] = String.valueOf(machine.getMold().getMultiply());
         content[LogHeader.STATUS.getIndex()] = machine.getStatus().getState().getName();
         content[LogHeader.REMARK.getIndex()] = remarks == null ? "" : remarks;
 

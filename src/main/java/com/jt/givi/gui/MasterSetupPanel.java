@@ -201,8 +201,8 @@ public class MasterSetupPanel extends javax.swing.JPanel {
         f.setDefaultCloseOperation(2);
 
         ArrayListModel listModel = new ArrayListModel();
-        listModel.add(new Mold("a", "2"));
-        listModel.add(new Mold("b", "4"));
+        listModel.add(new Mold("a", 2));
+        listModel.add(new Mold("b", 4));
 
         MasterSetupTableModel tableModel = new MasterSetupTableModel(listModel);
         MasterSetupPanel panel = new MasterSetupPanel(tableModel);

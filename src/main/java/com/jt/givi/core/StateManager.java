@@ -37,13 +37,14 @@ public class StateManager {
             String partNo = strArr[Machine.Column.PART_NO.getIndex()];
             String strTarget = strArr[Machine.Column.TARGET.getIndex()];
             String strActual = strArr[Machine.Column.ACTUAL.getIndex()];
-            String multiply = strArr[Machine.Column.MULTIPLY.getIndex()];
+            String strMultiply = strArr[Machine.Column.MULTIPLY.getIndex()];
             String strStatus = strArr[Machine.Column.STATUS.getIndex()];
             String strLastChanged = strArr[Machine.Column.LAST_CHANGED.getIndex()];
 
             int machineNo = Integer.valueOf(strMachineNo);
             int target = Integer.valueOf(strTarget);
             int actual = Integer.valueOf(strActual);
+            int multiply = Integer.valueOf(strMultiply);
 
             Status status = new Status(
                     Status.State.forName(strStatus),
@@ -67,7 +68,7 @@ public class StateManager {
             line[Machine.Column.PART_NO.getIndex()] = machine.getMold().getPartNo();
             line[Machine.Column.TARGET.getIndex()] = String.valueOf(machine.getTarget());
             line[Machine.Column.ACTUAL.getIndex()] = String.valueOf(machine.getActual());
-            line[Machine.Column.MULTIPLY.getIndex()] = machine.getMold().getMultiply();
+            line[Machine.Column.MULTIPLY.getIndex()] = String.valueOf(machine.getMold().getMultiply());
             line[Machine.Column.STATUS.getIndex()] = machine.getStatus().getState().toString();
             line[Machine.Column.LAST_CHANGED.getIndex()] = Util.dateTimeToString(machine.getStatus().getLastChanged());
             content.add(line);

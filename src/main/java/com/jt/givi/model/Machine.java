@@ -8,7 +8,7 @@ public class Machine {
         NO(0), PART_NO(1), TARGET(2), ACTUAL(3), MULTIPLY(4), STATUS(5), LAST_CHANGED(6);
         private int index;
 
-        private Column(int index) {
+        Column(int index) {
             this.index = index;
         }
 

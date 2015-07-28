@@ -26,13 +26,14 @@ public class MasterSetupManager {
         this.masterFilePath = masterFilePath;
     }
 
-    public List<Mold> load() throws IOException {
+    public List<Mold> load() throws IOException, NumberFormatException {
         FileReader fileReader = new FileReader(masterFilePath);
         CSVReader reader = new CSVReader(fileReader);
         List<String[]> content = reader.readAll();
         List<Mold> moldList = new ArrayList<Mold>();
         for (String[] strArr : content) {
-            moldList.add(new Mold(strArr[0], strArr[1]));
+            int multiply = Integer.valueOf(strArr[1]);
+            moldList.add(new Mold(strArr[0], multiply));
         }
         return moldList;
     }
@@ -40,7 +41,7 @@ public class MasterSetupManager {
     public void save(List<Mold> moldList) throws IOException {
         List<String[]> content = new ArrayList<String[]>();
         for (Mold mold : moldList) {
-            String[] line = new String[]{mold.getPartNo(), mold.getMultiply()};
+            String[] line = new String[]{mold.getPartNo(), String.valueOf(mold.getMultiply())};
             content.add(line);
         }
 
