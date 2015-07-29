@@ -8,6 +8,8 @@ package com.jt.givi.core;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.jt.givi.model.Mold;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,6 +22,7 @@ import java.util.List;
  * @author superman
  */
 public class MasterSetupManager {
+    private static final Logger logger = LoggerFactory.getLogger(MasterSetupManager.class);
     private String masterFilePath;
 
     public MasterSetupManager(String masterFilePath) {
@@ -27,6 +30,7 @@ public class MasterSetupManager {
     }
 
     public List<Mold> load() throws IOException, NumberFormatException {
+        logger.info("Loading master setup...");
         FileReader fileReader = new FileReader(masterFilePath);
         CSVReader reader = new CSVReader(fileReader);
         List<String[]> content = reader.readAll();
@@ -39,6 +43,7 @@ public class MasterSetupManager {
     }
 
     public void save(List<Mold> moldList) throws IOException {
+        logger.info("Saving master setup...");
         List<String[]> content = new ArrayList<String[]>();
         for (Mold mold : moldList) {
             String[] line = new String[]{mold.getPartNo(), String.valueOf(mold.getMultiply())};

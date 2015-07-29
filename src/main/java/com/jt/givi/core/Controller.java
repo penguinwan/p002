@@ -7,6 +7,8 @@ package com.jt.givi.core;
 
 import com.jgoodies.binding.list.ArrayListModel;
 import com.jt.givi.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -19,6 +21,7 @@ import java.util.concurrent.TimeoutException;
  * @author superman
  */
 public class Controller {
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
     private MasterSetupManager masterSetupManager;
     private StateManager stateManager;
     private StorageManager storageManager;
@@ -38,6 +41,7 @@ public class Controller {
     }
 
     private void initMasterSetupTableModel() throws IOException {
+        logger.info("Initializing master setup table...");
         List<Mold> moldList = masterSetupManager.load();
         ArrayListModel listModel = new ArrayListModel();
         listModel.addAll(moldList);
@@ -45,6 +49,7 @@ public class Controller {
     }
 
     private void initMachineTableModel() throws IOException, ParseException {
+        logger.info("Initializing machine table...");
         List<Machine> machineList = stateManager.load();
         ArrayListModel listModel = new ArrayListModel();
         listModel.addAll(machineList);
@@ -122,7 +127,7 @@ public class Controller {
 
     public void updateMachine(int machineNo) throws InterruptedException, TimeoutException, IOException {
         ValueContainer valueContainer = piCommunicationManager.getValue(machineNo);
-        System.out.println(String.format("Communication return value:%d state:%s", valueContainer.getValue(), valueContainer.getState().getName()));
+        logger.info("Communication return value={} state={}", valueContainer.getValue(), valueContainer.getState().getName());
 
         int row = machineNo - 1;
 

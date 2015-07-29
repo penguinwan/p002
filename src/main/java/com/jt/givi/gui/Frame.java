@@ -9,6 +9,8 @@ import com.jt.givi.core.Controller;
 import com.jt.givi.model.MachineTableModel;
 import com.jt.givi.model.MasterSetupTableModel;
 import com.jt.givi.model.Mold;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -27,7 +29,7 @@ import javax.swing.KeyStroke;
  * @author superman
  */
 public class Frame extends javax.swing.JFrame {
-
+    private static final Logger logger = LoggerFactory.getLogger(Frame.class);
     private JPanel mainPanel;
     private EditPanel editPanel;
     private MasterSetupPanel masterSetupPanel;
@@ -68,7 +70,7 @@ public class Frame extends javax.swing.JFrame {
     }
 
     private void setupInputMap() {
-        System.out.println("setting input map...");
+        logger.info("Setting input map...");
         JPanel contentPane = (JPanel) getContentPane();
         InputMap im = contentPane.getInputMap(WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = contentPane.getActionMap();
@@ -175,7 +177,7 @@ public class Frame extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("F2 pressed...");
+            logger.info("F2 pressed...");
             frame.masterSetupPanel.setVisible(false);
 
             EditPanel editPanel = frame.editPanel;
@@ -199,6 +201,7 @@ public class Frame extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            logger.info("F7 pressed...");
             frame.editPanel.setVisible(false);
 
             MasterSetupPanel panel = frame.masterSetupPanel;
@@ -219,6 +222,7 @@ public class Frame extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            logger.info("F9 pressed...");
             if (frame.editPanel.isVisible()) {
                 try {
                     Mold selectedMold = frame.editPanel.getSelectedMold();
@@ -252,6 +256,7 @@ public class Frame extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            logger.info("Esc pressed...");
             if (frame.editPanel.isVisible()) {
                 frame.editPanel.setVisible(false);
             } else if (frame.masterSetupPanel.isVisible()) {

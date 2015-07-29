@@ -7,12 +7,14 @@ package com.jt.givi.model;
 
 import com.jgoodies.binding.adapter.AbstractTableAdapter;
 import com.jgoodies.binding.list.ArrayListModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author superman
  */
 public class MasterSetupTableModel extends AbstractTableAdapter {
-
+    private static final Logger logger = LoggerFactory.getLogger(MasterSetupTableModel.class);
     public static final String[] COL_NAMES = new String[]{"Part No", "Multiply"};
 
     private ArrayListModel listModel;
@@ -37,6 +39,7 @@ public class MasterSetupTableModel extends AbstractTableAdapter {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) throws NumberFormatException {
+        logger.debug("MasterSetupTableModel setValue {} {} {}", aValue, rowIndex, columnIndex);
         if (columnIndex == 0) {
             ((Mold) listModel.get(rowIndex)).setPartNo(aValue.toString());
         } else {
@@ -46,10 +49,12 @@ public class MasterSetupTableModel extends AbstractTableAdapter {
     }
 
     public void removeRow(int rowIndex) {
+        logger.debug("Remove row...rowIndex={}", rowIndex);
         listModel.remove(rowIndex);
     }
 
     public void addRow() {
+        logger.debug("Add row...");
         listModel.add(new Mold("", 0));
     }
 

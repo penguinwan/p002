@@ -7,6 +7,8 @@ package com.jt.givi.gui;
 
 import com.jt.givi.model.Machine;
 import com.jt.givi.model.Mold;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ItemEvent;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
  * @author superman
  */
 public class EditPanel extends javax.swing.JPanel {
+    private static final Logger logger = LoggerFactory.getLogger(EditPanel.class);
     private List<Mold> moldList;
     private List<Machine> machineList;
 

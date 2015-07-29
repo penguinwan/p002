@@ -4,6 +4,8 @@ import com.jt.givi.core.Controller;
 import com.jt.givi.gui.Frame;
 import com.jt.givi.model.MachineTableModel;
 import com.jt.givi.model.MasterSetupTableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -13,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Created by superman on 7/24/2015.
  */
 public class Launcher3 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Launcher3.class);
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -42,12 +45,14 @@ public class Launcher3 {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+                    LOGGER.info("Starting...");
                     com.jt.givi.core.Controller controller = new com.jt.givi.core.Controller();
                     MasterSetupTableModel masterSetupTableModel = controller.getMasterSetupTableModel();
                     MachineTableModel machineTableModel = controller.getMachineTableModel();
 
                     Frame frame = new Frame(controller, masterSetupTableModel, machineTableModel);
 
+                    LOGGER.info("Initializing scheduler...");
                     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(11);
                     UpdateMachineTask machine1 = new UpdateMachineTask(controller, 1);
                     UpdateMachineTask machine2 = new UpdateMachineTask(controller, 2);

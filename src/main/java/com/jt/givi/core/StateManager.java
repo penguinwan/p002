@@ -6,6 +6,8 @@ import com.jt.givi.model.Machine;
 import com.jt.givi.model.Mold;
 import com.jt.givi.model.Status;
 import com.jt.givi.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -21,6 +23,7 @@ import java.util.List;
  * Created by superman on 7/18/2015.
  */
 public class StateManager {
+    private static final Logger logger = LoggerFactory.getLogger(StateManager.class);
     private String filePath;
 
     public StateManager(String filePath) {
@@ -28,6 +31,7 @@ public class StateManager {
     }
 
     public List<Machine> load() throws IOException, NumberFormatException, ParseException {
+        logger.info("Loading machine state...");
         FileReader fileReader = new FileReader(filePath);
         CSVReader reader = new CSVReader(fileReader);
         List<String[]> content = reader.readAll();
@@ -60,6 +64,7 @@ public class StateManager {
     }
 
     public void save(List<Machine> machineList) throws IOException {
+        logger.info("Saving machine state...");
         Collections.sort(machineList, getComparator());
         List<String[]> content = new ArrayList<String[]>();
         for (Machine machine : machineList) {

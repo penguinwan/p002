@@ -3,11 +3,14 @@ package com.jt.givi.model;
 import com.jgoodies.binding.adapter.AbstractTableAdapter;
 import com.jgoodies.binding.list.ArrayListModel;
 import com.jt.givi.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by superman on 7/18/2015.
  */
 public class MachineTableModel extends AbstractTableAdapter {
+    private static final Logger logger = LoggerFactory.getLogger(MachineTableModel.class);
     public static final String[] COL_NAMES = new String[]{
             "Machine No",
             "Part No",
@@ -53,6 +56,7 @@ public class MachineTableModel extends AbstractTableAdapter {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) throws NumberFormatException {
+        logger.debug("MachineTableModel setValue {} {} {}", aValue, rowIndex, columnIndex);
         Machine machine = (Machine) listModel.get(rowIndex);
         if (columnIndex == Machine.Column.PART_NO.getIndex()) {
             machine.getMold().setPartNo((String) aValue);

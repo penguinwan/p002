@@ -3,6 +3,8 @@ package com.jt.givi.core;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.jt.givi.model.Machine;
 import com.jt.givi.util.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * Created by superman on 7/21/2015.
  */
 public class StorageManager {
+    private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
     public static final String REMARK_STATUS_CHANGED = "Status Changed ";
     public static final String REMARK_PART_RESET = "Part Reset ";
     public static final String REMARK_ACTUAL_MODIFIED = "Actual Modified ";
@@ -64,6 +67,7 @@ public class StorageManager {
     public StorageManager(String logFileFolder) {
         this.logFileFolder = logFileFolder;
         this.queue = new LinkedBlockingQueue<>();
+        logger.info("Starting file writer...");
         LogWriter writer = new LogWriter(this, queue);
         new Thread(writer).start();
     }
@@ -75,6 +79,7 @@ public class StorageManager {
                 machineNo);
         File logFile = new File(logFileFolder, fileName);
         if (!logFile.exists()) {
+            logger.info("Log file does not existing, creating file [{}]", logFile.getName());
             logFile.createNewFile();
 
             // writer CSV header
@@ -88,6 +93,7 @@ public class StorageManager {
     }
 
     public void writeLog(Machine machine, String remarks) throws IOException, InterruptedException {
+        logger.info("Putting log to queue...");
         Message message = new Message();
         message.machine = machine;
         message.remark = remarks;
@@ -95,6 +101,7 @@ public class StorageManager {
     }
 
     void logToFile(Machine machine, String remarks) throws IOException {
+        logger.info("Writing to file...");
         Date now = Calendar.getInstance().getTime();
         String[] content = new String[LOG_FILE_HEADER.length];
         content[LogHeader.DATE.getIndex()] = Util.dateToString(now);

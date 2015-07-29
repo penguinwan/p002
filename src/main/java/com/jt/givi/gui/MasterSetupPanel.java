@@ -8,6 +8,8 @@ package com.jt.givi.gui;
 import com.jgoodies.binding.list.ArrayListModel;
 import com.jt.givi.model.MasterSetupTableModel;
 import com.jt.givi.model.Mold;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -22,7 +24,7 @@ import javax.swing.KeyStroke;
  * @author superman
  */
 public class MasterSetupPanel extends javax.swing.JPanel {
-
+    private static final Logger logger = LoggerFactory.getLogger(MasterSetupPanel.class);
     private MasterSetupTableModel model;
 
     /**
@@ -160,7 +162,7 @@ public class MasterSetupPanel extends javax.swing.JPanel {
     }
 
     private void setupInputMap() {
-        System.out.println("setting master setup input map...");
+        logger.info("Setting master setup input map...");
         InputMap im = masterTable.getInputMap(WHEN_FOCUSED);
         ActionMap am = masterTable.getActionMap();
 
@@ -179,6 +181,7 @@ public class MasterSetupPanel extends javax.swing.JPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
+            logger.info("Delete pressed...");
             panel.deleteSelectedRow();
         }
     }
@@ -192,6 +195,7 @@ public class MasterSetupPanel extends javax.swing.JPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
+            logger.info("Insert pressed...");
             panel.addRow();
         }
     }
