@@ -10,6 +10,9 @@ import com.pi4j.io.serial.SerialFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -24,16 +27,24 @@ public class PiCommunicationManager {
     private GpioController gpio;
     private GpioPinDigitalOutput pin04;
     private int timeout;
+    private int sendDelay;
     private boolean disablePi = false;
+    private BlockingQueue<Envelope> dataQueue;
 
-    public PiCommunicationManager(int timeout) {
+    public PiCommunicationManager(int timeout, int sendDelay) {
         String skipPi = System.getProperty("skipPi");
         if (skipPi != null && skipPi.equalsIgnoreCase("true")) {
             disablePi = true;
         }
         if (!this.disablePi) {
             this.timeout = timeout;
+            this.sendDelay = sendDelay;
+            this.dataQueue = new LinkedBlockingQueue<>();
+
+            Listener dataListener = new Listener(this.dataQueue);
             serial = SerialFactory.createInstance();
+            serial.addListener(dataListener);
+
             logger.info("Opening serial default port={} baudrate={}", Serial.DEFAULT_COM_PORT, String.valueOf(9600));
             serial.open(Serial.DEFAULT_COM_PORT, 9600);
 
@@ -43,25 +54,31 @@ public class PiCommunicationManager {
         }
     }
 
-    public void reset(int machineNo) {
+    public void reset(int machineNo) throws InterruptedException {
         logger.info("Reseting machine...");
         if (!disablePi) {
+            logger.debug("Setting GPIO pin 04 to high...");
             pin04.high();
             String machineAddress = String.format("%03d", machineNo);
             logger.debug("Serial writing [{}]", String.format(RESET_FORMAT, machineAddress));
             serial.writeln(String.format(RESET_FORMAT, machineAddress));
+            Thread.sleep(sendDelay);
+            logger.debug("Setting GPIO pin 04 to low...");
             pin04.low();
         }
     }
 
-    public void adjust(int machineNo, int actualValue) {
+    public void adjust(int machineNo, int actualValue) throws InterruptedException {
         logger.info("Adjusting machine...");
         if (!disablePi) {
+            logger.debug("Setting GPIO pin 04 to high...");
             pin04.high();
             String machineAddress = String.format("%03d", machineNo);
             String value = String.format("%04d", actualValue);
             logger.debug("Serial writing [{}]", String.format(ADJUST_FORMAT, machineAddress, value));
             serial.writeln(String.format(ADJUST_FORMAT, machineAddress, value));
+            Thread.sleep(sendDelay);
+            logger.debug("Setting GPIO pin 04 to low...");
             pin04.low();
         }
     }
@@ -73,31 +90,26 @@ public class PiCommunicationManager {
             logger.debug("Setting GPIO pin 04 to high...");
             pin04.high();
 
-            Envelope envelope = new Envelope();
-            Listener listener = new Listener(envelope);
-            serial.addListener(listener);
-
             String machineAddress = String.format("%03d", machineNo);
             logger.debug("Serial writing [{}]", String.format(GET_VALUE_FORMAT, machineAddress));
             serial.writeln(String.format(GET_VALUE_FORMAT, machineAddress));
-            int waitingTime = 0;
-            while (!envelope.received) {
-                waitingTime += 50;
-                Thread.sleep(50);
-                if (waitingTime > timeout) {
-                    serial.removeListener(listener);
-                    throw new TimeoutException();
-                }
-            }
-
-            serial.removeListener(listener);
+            Thread.sleep(sendDelay);
+            logger.debug("Clearing data queue...");
+            dataQueue.clear();
             logger.debug("Setting GPIO pin 04 to low...");
             pin04.low();
-            ResponseParser parser = new ResponseParser(envelope.data);
-            return new ValueContainer(
-                    parser.machine(),
-                    parser.value(),
-                    parser.state());
+
+            Envelope envelope = dataQueue.poll(timeout, TimeUnit.MILLISECONDS);
+            if(envelope != null) {
+                logger.info("Processing data... {}", envelope.data);
+                ResponseParser parser = new ResponseParser(envelope.data);
+                return new ValueContainer(
+                        parser.machine(),
+                        parser.value(),
+                        parser.state());
+            } else {
+                return ValueContainer.EMPTY;
+            }
         } else {
             return new ValueContainer(1, 100, Status.State.GREEN);
         }
@@ -110,21 +122,47 @@ public class PiCommunicationManager {
     }
 
     private static class Listener implements SerialDataListener {
-        private Envelope envelope;
+        private BlockingQueue dataQueue;
+        private String current = "";
+        private boolean isBegin = false;
 
-        public Listener(Envelope envelope) {
-            this.envelope = envelope;
+        public Listener(BlockingQueue dataQueue) {
+            this.dataQueue = dataQueue;
         }
 
         @Override
         public void dataReceived(SerialDataEvent serialDataEvent) {
-            logger.info("Received data={}", serialDataEvent.getData());
-            envelope.data = serialDataEvent.getData();
-            envelope.received = true;
+            logger.debug("Received data={}", serialDataEvent.getData());
+            try {
+                String received = serialDataEvent.getData();
+                if (received.indexOf("S") != -1) {
+                    logger.debug("Data begin...");
+                    isBegin = true;
+                }
+
+                if (isBegin) {
+                    current += received;
+                    if (received.indexOf("E") != -1) {
+                        Envelope envelope = new Envelope();
+                        envelope.data = current.substring(current.indexOf("S"), (current.indexOf("E") + 1));
+                        envelope.received = true;
+                        dataQueue.put(envelope);
+
+                        current = "";
+                        isBegin = false;
+                        logger.debug("End receiving, put to queue.");
+                    } else {
+                        logger.debug("Appending received data, so far {}", current);
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
-    private static class ResponseParser {
+    public static class ResponseParser {
         private String response;
 
         ResponseParser(String response) {
@@ -132,7 +170,9 @@ public class PiCommunicationManager {
         }
 
         int machine() {
-            return Integer.valueOf(response.substring(0, 3));
+            String strmachine = response.substring(1, 4);
+            logger.debug("machine={}", strmachine);
+            return Integer.valueOf(response.substring(1, 4));
         }
 
 //        String command() {
@@ -140,11 +180,13 @@ public class PiCommunicationManager {
 //        }
 
         int value() {
-            return Integer.valueOf(response.substring(6, 10));
+            //String strValue = response.substring(6, 10);
+            //logger.debug("value={}", strValue);
+            return Integer.valueOf(response.substring(7, 11));
         }
 
         Status.State state() {
-            String state = response.substring(10);
+            String state = response.substring(11, 12);
             if (state.equalsIgnoreCase("R")) {
                 return Status.State.RED;
             } else if (state.equalsIgnoreCase("O")) {

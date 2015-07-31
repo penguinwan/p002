@@ -4,6 +4,7 @@ package com.jt.givi.model;
  * Created by superman on 7/24/2015.
  */
 public class ValueContainer {
+    public static final ValueContainer EMPTY = new ValueContainer(0, 0, Status.State.RED);
     private int machineNo;
     private int value;
     private Status.State state;

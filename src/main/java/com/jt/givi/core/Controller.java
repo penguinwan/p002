@@ -35,7 +35,7 @@ public class Controller {
         masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
         stateManager = new StateManager(configManager.stateFilePath);
         storageManager = new StorageManager(configManager.logFolderPath);
-        piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout);
+        piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay);
         initMasterSetupTableModel();
         initMachineTableModel();
     }
@@ -77,7 +77,7 @@ public class Controller {
         masterSetupManager.save(moldList);
     }
 
-    public void resetMachine(int machineNo, Mold selectedMold, int target, int actual) {
+    public void resetMachine(int machineNo, Mold selectedMold, int target, int actual) throws InterruptedException {
         int row = machineNo - 1;
 
         String remark = "";
@@ -127,6 +127,9 @@ public class Controller {
 
     public void updateMachine(int machineNo) throws InterruptedException, TimeoutException, IOException {
         ValueContainer valueContainer = piCommunicationManager.getValue(machineNo);
+        if(valueContainer.equals(ValueContainer.EMPTY)) {
+            return;
+        }
         logger.info("Communication return value={} state={}", valueContainer.getValue(), valueContainer.getState().getName());
 
         int row = machineNo - 1;

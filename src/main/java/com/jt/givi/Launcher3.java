@@ -53,7 +53,7 @@ public class Launcher3 {
                     Frame frame = new Frame(controller, masterSetupTableModel, machineTableModel);
 
                     LOGGER.info("Initializing scheduler...");
-                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(11);
+                    ScheduledExecutorService getValueScheduler = Executors.newScheduledThreadPool(1);
                     UpdateMachineTask machine1 = new UpdateMachineTask(controller, 1);
                     UpdateMachineTask machine2 = new UpdateMachineTask(controller, 2);
                     UpdateMachineTask machine3 = new UpdateMachineTask(controller, 3);
@@ -65,19 +65,20 @@ public class Launcher3 {
                     UpdateMachineTask machine9 = new UpdateMachineTask(controller, 9);
                     UpdateMachineTask machine10 = new UpdateMachineTask(controller, 10);
 
-                    scheduler.scheduleAtFixedRate(machine1, 10, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine2, 12, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine3, 14, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine4, 16, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine5, 18, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine6, 20, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine7, 22, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine8, 24, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine9, 26, 10, TimeUnit.SECONDS);
-                    scheduler.scheduleAtFixedRate(machine10, 28, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine1, 10, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine2, 12, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine3, 14, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine4, 16, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine5, 18, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine6, 20, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine7, 22, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine8, 24, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine9, 26, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine10, 28, 10, TimeUnit.SECONDS);
 
+                    ScheduledExecutorService logMachineScheduler = Executors.newScheduledThreadPool(1);
                     LogMachineTask logMachine = new LogMachineTask(controller);
-                    scheduler.scheduleAtFixedRate(logMachine, 0, 10, TimeUnit.MINUTES);
+                    logMachineScheduler.scheduleAtFixedRate(logMachine, 0, 10, TimeUnit.MINUTES);
 
                     frame.setVisible(true);
 

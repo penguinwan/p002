@@ -17,6 +17,7 @@ public class ConfigManager {
     public String masterFilePath;
     public String logFolderPath;
     public int serialTimeout;
+    public int sendDelay;
 
     public ConfigManager() throws IOException, NumberFormatException {
         load();
@@ -37,10 +38,12 @@ public class ConfigManager {
         masterFilePath = prop.getProperty("master.file.path");
         logFolderPath = prop.getProperty("log.folder.path");
         serialTimeout = Integer.valueOf(prop.getProperty("serial.timeout.milisecond"));
+        sendDelay = Integer.valueOf(prop.getProperty("send.delay.milisecond"));
 
         logger.debug("state file={}", stateFilePath);
         logger.debug("master file={}", masterFilePath);
         logger.debug("log folder={}", logFolderPath);
         logger.debug("serial timeout={}", serialTimeout);
+        logger.debug("send delay={}", sendDelay);
     }
 }
