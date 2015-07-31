@@ -18,6 +18,8 @@ public class ConfigManager {
     public String logFolderPath;
     public int serialTimeout;
     public int sendDelay;
+    public int storageInterval;
+    public int updateMachineInterval;
 
     public ConfigManager() throws IOException, NumberFormatException {
         load();
@@ -39,11 +41,15 @@ public class ConfigManager {
         logFolderPath = prop.getProperty("log.folder.path");
         serialTimeout = Integer.valueOf(prop.getProperty("serial.timeout.milisecond"));
         sendDelay = Integer.valueOf(prop.getProperty("send.delay.milisecond"));
+        storageInterval = Integer.valueOf(prop.getProperty("storage.interval.minute"));
+        updateMachineInterval = Integer.valueOf(prop.getProperty("update.interval.second"));
 
         logger.debug("state file={}", stateFilePath);
         logger.debug("master file={}", masterFilePath);
         logger.debug("log folder={}", logFolderPath);
         logger.debug("serial timeout={}", serialTimeout);
         logger.debug("send delay={}", sendDelay);
+        logger.debug("storage interval={}", storageInterval);
+        logger.debug("update interval={}", updateMachineInterval);
     }
 }

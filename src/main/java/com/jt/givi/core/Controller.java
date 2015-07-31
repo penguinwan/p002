@@ -30,8 +30,8 @@ public class Controller {
     private MasterSetupTableModel masterSetupTableModel;
     private MachineTableModel machineTableModel;
 
-    public Controller() throws IOException, ParseException {
-        configManager = new ConfigManager();
+    public Controller(ConfigManager cfg) throws IOException, ParseException {
+        this.configManager = cfg;
         masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
         stateManager = new StateManager(configManager.stateFilePath);
         storageManager = new StorageManager(configManager.logFolderPath);

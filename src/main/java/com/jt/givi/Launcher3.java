@@ -1,5 +1,6 @@
 package com.jt.givi;
 
+import com.jt.givi.core.ConfigManager;
 import com.jt.givi.core.Controller;
 import com.jt.givi.gui.Frame;
 import com.jt.givi.model.MachineTableModel;
@@ -45,8 +46,10 @@ public class Launcher3 {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+                    ConfigManager configManager = new ConfigManager();
+
                     LOGGER.info("Starting...");
-                    com.jt.givi.core.Controller controller = new com.jt.givi.core.Controller();
+                    com.jt.givi.core.Controller controller = new com.jt.givi.core.Controller(configManager);
                     MasterSetupTableModel masterSetupTableModel = controller.getMasterSetupTableModel();
                     MachineTableModel machineTableModel = controller.getMachineTableModel();
 
@@ -65,20 +68,20 @@ public class Launcher3 {
                     UpdateMachineTask machine9 = new UpdateMachineTask(controller, 9);
                     UpdateMachineTask machine10 = new UpdateMachineTask(controller, 10);
 
-                    getValueScheduler.scheduleAtFixedRate(machine1, 10, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine2, 12, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine3, 14, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine4, 16, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine5, 18, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine6, 20, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine7, 22, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine8, 24, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine9, 26, 10, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine10, 28, 10, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine1, 10, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine2, 12, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine3, 14, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine4, 16, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine5, 18, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine6, 20, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine7, 22, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine8, 24, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine9, 26, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine10, 28, configManager.updateMachineInterval, TimeUnit.SECONDS);
 
                     ScheduledExecutorService logMachineScheduler = Executors.newScheduledThreadPool(1);
                     LogMachineTask logMachine = new LogMachineTask(controller);
-                    logMachineScheduler.scheduleAtFixedRate(logMachine, 0, 10, TimeUnit.MINUTES);
+                    logMachineScheduler.scheduleAtFixedRate(logMachine, 0, configManager.storageInterval, TimeUnit.MINUTES);
 
                     frame.setVisible(true);
 
