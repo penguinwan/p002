@@ -24,7 +24,7 @@ public class StorageManager {
     public static final String REMARK_PART_RESET = "Part Reset ";
     public static final String REMARK_ACTUAL_MODIFIED = "Actual Modified ";
 
-    private static final String FILE_NAME_FORMAT = "%s-machine-%s.log";
+    private static final String FILE_NAME_FORMAT = "machine-%s.csv";
     private static final String[] LOG_FILE_HEADER = new String[]{
             LogHeader.DATE.getName(),
             LogHeader.TIME.getName(),
@@ -73,9 +73,7 @@ public class StorageManager {
     }
 
     protected File getLogFile(String machineNo) throws IOException {
-        Date today = Calendar.getInstance().getTime();
         String fileName = String.format(FILE_NAME_FORMAT,
-                Util.dateToString(today),
                 machineNo);
         File logFile = new File(logFileFolder, fileName);
         if (!logFile.exists()) {
