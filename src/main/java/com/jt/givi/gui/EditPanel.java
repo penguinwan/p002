@@ -240,6 +240,7 @@ public class EditPanel extends javax.swing.JPanel {
     }
 
     private void setSelectedMold(String partNo) {
+        cmbPartNo.setSelectedIndex(-1);
         for (int i = 0; i < cmbPartNo.getItemCount(); i++) {
             Mold mold = (Mold) cmbPartNo.getModel().getElementAt(i);
             if (mold.getPartNo().equals(partNo)) {
@@ -256,8 +257,9 @@ public class EditPanel extends javax.swing.JPanel {
         this.moldList = moldList;
         this.machineList = machineList;
         cmbPartNo.setModel(new javax.swing.DefaultComboBoxModel(moldList.toArray()));
-        cmbMachineNo.setSelectedIndex(0);
+        cmbMachineNo.setSelectedIndex(-1);
         setVisible(true);
         cmbMachineNo.requestFocus();
+        cmbMachineNo.setSelectedIndex(0);
     }
 }
