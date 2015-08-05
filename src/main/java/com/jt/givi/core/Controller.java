@@ -120,7 +120,7 @@ public class Controller {
         }
     }
 
-    public void onClose() throws Exception {
+    public void saveMachineState() throws Exception {
         List<Machine> machineList = getMachineList();
         stateManager.save(machineList);
     }

@@ -83,6 +83,10 @@ public class Launcher3 {
                     LogMachineTask logMachine = new LogMachineTask(controller);
                     logMachineScheduler.scheduleAtFixedRate(logMachine, 0, configManager.storageInterval, TimeUnit.MINUTES);
 
+                    ScheduledExecutorService saveMachineStateScheduler = Executors.newScheduledThreadPool(1);
+                    SaveMachineStateTask saveMachineStateTask = new SaveMachineStateTask(controller);
+                    saveMachineStateScheduler.scheduleAtFixedRate(saveMachineStateTask, 0, configManager.saveMachineStateInterval, TimeUnit.SECONDS);
+
                     frame.setVisible(true);
 
                 } catch (Exception ex) {
@@ -121,6 +125,22 @@ public class Launcher3 {
         public void run() {
             try {
                 controller.logMachine();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private static class SaveMachineStateTask implements Runnable {
+        Controller controller;
+
+        SaveMachineStateTask(Controller controller) {
+            this.controller = controller;
+        }
+
+        public void run() {
+            try {
+                controller.saveMachineState();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

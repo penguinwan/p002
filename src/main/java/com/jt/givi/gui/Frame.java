@@ -90,7 +90,7 @@ public class Frame extends javax.swing.JFrame {
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 try {
-                    controller.onClose();
+                    controller.saveMachineState();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

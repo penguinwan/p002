@@ -20,6 +20,7 @@ public class ConfigManager {
     public int sendDelay;
     public int storageInterval;
     public int updateMachineInterval;
+    public int saveMachineStateInterval;
 
     public ConfigManager() throws IOException, NumberFormatException {
         load();
@@ -43,6 +44,7 @@ public class ConfigManager {
         sendDelay = Integer.valueOf(prop.getProperty("send.delay.milisecond"));
         storageInterval = Integer.valueOf(prop.getProperty("storage.interval.minute"));
         updateMachineInterval = Integer.valueOf(prop.getProperty("update.interval.second"));
+        saveMachineStateInterval = Integer.valueOf(prop.getProperty("save.machine.state.interval.second"));
 
         logger.debug("state file={}", stateFilePath);
         logger.debug("master file={}", masterFilePath);
@@ -51,5 +53,7 @@ public class ConfigManager {
         logger.debug("send delay={}", sendDelay);
         logger.debug("storage interval={}", storageInterval);
         logger.debug("update interval={}", updateMachineInterval);
+        logger.debug("save machine state interval={}", saveMachineStateInterval);
     }
 }
+
