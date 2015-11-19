@@ -7,6 +7,7 @@ package com.jt.givi.core;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import com.jt.givi.api.IMasterSetupManager;
 import com.jt.givi.model.Mold;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * @author superman
  */
-public class MasterSetupManager {
+public class MasterSetupManager implements IMasterSetupManager {
     private static final Logger logger = LoggerFactory.getLogger(MasterSetupManager.class);
     private String masterFilePath;
 
@@ -29,6 +30,7 @@ public class MasterSetupManager {
         this.masterFilePath = masterFilePath;
     }
 
+    @Override
     public List<Mold> load() throws IOException, NumberFormatException {
         logger.info("Loading master setup...");
         FileReader fileReader = new FileReader(masterFilePath);
@@ -42,6 +44,7 @@ public class MasterSetupManager {
         return moldList;
     }
 
+    @Override
     public void save(List<Mold> moldList) throws IOException {
         logger.info("Saving master setup...");
         List<String[]> content = new ArrayList<String[]>();

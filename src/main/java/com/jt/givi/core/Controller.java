@@ -6,6 +6,10 @@
 package com.jt.givi.core;
 
 import com.jgoodies.binding.list.ArrayListModel;
+import com.jt.givi.api.IMasterSetupManager;
+import com.jt.givi.api.IPiCommunicationManager;
+import com.jt.givi.api.IStateManager;
+import com.jt.givi.api.IStorageManager;
 import com.jt.givi.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +26,22 @@ import java.util.concurrent.TimeoutException;
  */
 public class Controller {
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
-    private MasterSetupManager masterSetupManager;
-    private StateManager stateManager;
-    private StorageManager storageManager;
-    private PiCommunicationManager piCommunicationManager;
-    private ConfigManager configManager;
+    private IMasterSetupManager masterSetupManager;
+    private IStateManager stateManager;
+    private IStorageManager storageManager;
+    private IPiCommunicationManager piCommunicationManager;
     private MasterSetupTableModel masterSetupTableModel;
     private MachineTableModel machineTableModel;
 
-    public Controller(ConfigManager cfg) throws IOException, ParseException {
-        this.configManager = cfg;
-        masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
-        stateManager = new StateManager(configManager.stateFilePath);
-        storageManager = new StorageManager(configManager.logFolderPath);
-        piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay);
+    public Controller(IMasterSetupManager masterSetupManager,
+                      IStateManager stateManager,
+                      IStorageManager storeManager,
+                      IPiCommunicationManager piCommunicationManager)
+            throws IOException, ParseException {
+        this.masterSetupManager = masterSetupManager;
+        this.stateManager = stateManager;
+        this.storageManager = storeManager;
+        this.piCommunicationManager = piCommunicationManager;
         initMasterSetupTableModel();
         initMachineTableModel();
     }

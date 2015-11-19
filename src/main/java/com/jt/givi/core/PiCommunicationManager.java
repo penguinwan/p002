@@ -1,5 +1,6 @@
 package com.jt.givi.core;
 
+import com.jt.givi.api.IPiCommunicationManager;
 import com.jt.givi.model.Status;
 import com.jt.givi.model.ValueContainer;
 import com.pi4j.io.gpio.*;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by superman on 7/24/2015.
  */
-public class PiCommunicationManager {
+public class PiCommunicationManager implements IPiCommunicationManager {
     private static final Logger logger = LoggerFactory.getLogger(PiCommunicationManager.class);
     private static final String GET_VALUE_FORMAT = "%sGVL";
     private static final String RESET_FORMAT = "%sRST";
@@ -54,6 +55,7 @@ public class PiCommunicationManager {
         }
     }
 
+    @Override
     public void reset(int machineNo) throws InterruptedException {
         logger.info("Reseting machine...");
         if (!disablePi) {
@@ -68,6 +70,7 @@ public class PiCommunicationManager {
         }
     }
 
+    @Override
     public void adjust(int machineNo, int actualValue) throws InterruptedException {
         logger.info("Adjusting machine...");
         if (!disablePi) {
@@ -83,6 +86,7 @@ public class PiCommunicationManager {
         }
     }
 
+    @Override
     public ValueContainer getValue(int machineNo)
             throws InterruptedException, TimeoutException {
         logger.info("Requesting machine value...");

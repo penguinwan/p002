@@ -1,7 +1,6 @@
 package com.jt.givi;
 
-import com.jt.givi.core.ConfigManager;
-import com.jt.givi.core.Controller;
+import com.jt.givi.core.*;
 import com.jt.givi.gui.Frame;
 import com.jt.givi.model.MachineTableModel;
 import com.jt.givi.model.MasterSetupTableModel;
@@ -47,9 +46,13 @@ public class Launcher3 {
             public void run() {
                 try {
                     ConfigManager configManager = new ConfigManager();
+                    MasterSetupManager masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
+                    StateManager stateManager = new StateManager(configManager.stateFilePath);
+                    StorageManager storageManager = new StorageManager(configManager.logFolderPath);
+                    PiCommunicationManager piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay);
 
                     LOGGER.info("Starting...");
-                    com.jt.givi.core.Controller controller = new com.jt.givi.core.Controller(configManager);
+                    com.jt.givi.core.Controller controller = new com.jt.givi.core.Controller(masterSetupManager, stateManager, storageManager, piCommunicationManager);
                     MasterSetupTableModel masterSetupTableModel = controller.getMasterSetupTableModel();
                     MachineTableModel machineTableModel = controller.getMachineTableModel();
 

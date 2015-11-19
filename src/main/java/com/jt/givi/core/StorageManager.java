@@ -1,6 +1,7 @@
 package com.jt.givi.core;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import com.jt.givi.api.IStorageManager;
 import com.jt.givi.model.Machine;
 import com.jt.givi.util.Util;
 import org.slf4j.Logger;
@@ -18,12 +19,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by superman on 7/21/2015.
  */
-public class StorageManager {
+public class StorageManager implements IStorageManager {
     private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
-    public static final String REMARK_STATUS_CHANGED = "Status Changed ";
-    public static final String REMARK_PART_RESET = "Part Reset ";
-    public static final String REMARK_ACTUAL_MODIFIED = "Actual Modified ";
-
     private static final String FILE_NAME_FORMAT = "machine-%s.csv";
     private static final String[] LOG_FILE_HEADER = new String[]{
             LogHeader.DATE.getName(),
@@ -90,6 +87,7 @@ public class StorageManager {
         return logFile;
     }
 
+    @Override
     public void writeLog(Machine machine, String remarks) throws IOException, InterruptedException {
         logger.info("Putting log to queue...");
         Message message = new Message();

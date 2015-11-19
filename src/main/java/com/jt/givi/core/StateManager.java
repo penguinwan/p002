@@ -2,6 +2,7 @@ package com.jt.givi.core;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import com.jt.givi.api.IStateManager;
 import com.jt.givi.model.Machine;
 import com.jt.givi.model.Mold;
 import com.jt.givi.model.Status;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * Created by superman on 7/18/2015.
  */
-public class StateManager {
+public class StateManager implements IStateManager {
     private static final Logger logger = LoggerFactory.getLogger(StateManager.class);
     private String filePath;
 
@@ -30,6 +31,7 @@ public class StateManager {
         this.filePath = filePath;
     }
 
+    @Override
     public List<Machine> load() throws IOException, NumberFormatException, ParseException {
         logger.info("Loading machine state...");
         FileReader fileReader = new FileReader(filePath);
@@ -63,6 +65,7 @@ public class StateManager {
         return machineList;
     }
 
+    @Override
     public void save(List<Machine> machineList) throws IOException {
         logger.info("Saving machine state...");
         Collections.sort(machineList, getComparator());
