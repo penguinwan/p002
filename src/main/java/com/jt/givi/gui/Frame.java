@@ -5,8 +5,7 @@
  */
 package com.jt.givi.gui;
 
-import com.jt.givi.core.ConfigManager;
-import com.jt.givi.core.Controller;
+import com.jt.givi.core.*;
 import com.jt.givi.model.MachineTableModel;
 import com.jt.givi.model.MasterSetupTableModel;
 import com.jt.givi.model.Mold;
@@ -155,7 +154,12 @@ public class Frame extends javax.swing.JFrame {
             public void run() {
                 try {
                     ConfigManager configManager = new ConfigManager();
-                    Controller controller = new Controller(configManager);
+                    MasterSetupManager masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
+                    StateManager stateManager = new StateManager(configManager.stateFilePath);
+                    StorageManager storageManager = new StorageManager(configManager.logFolderPath);
+                    PiCommunicationManager piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay);
+
+                    Controller controller = new Controller(masterSetupManager, stateManager, storageManager, piCommunicationManager);
                     MasterSetupTableModel masterSetupTableModel = controller.getMasterSetupTableModel();
                     MachineTableModel machineTableModel = controller.getMachineTableModel();
 
