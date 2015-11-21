@@ -132,18 +132,19 @@ public class Controller {
     }
 
     public void updateMachine(int machineNo) throws InterruptedException, TimeoutException, IOException {
-        ValueContainer valueContainer = piCommunicationManager.getValue(machineNo);
-        if(valueContainer.equals(ValueContainer.EMPTY)) {
-            return;
-        }
-        logger.info("Communication return value={} state={}", valueContainer.getValue(), valueContainer.getState().getName());
-
         int row = machineNo - 1;
-
         Machine updatedMachine = (Machine) machineTableModel.getListModel().get(row);
         Status currentStatus = (Status) machineTableModel.getValueAt(row, Machine.Column.STATUS.getIndex());
         Status.State currentState = currentStatus.getState();
-        Status.State newState = valueContainer.getState();
+        Status.State newState;
+
+        ValueContainer valueContainer = piCommunicationManager.getValue(machineNo);
+        if (!valueContainer.equals(ValueContainer.EMPTY)) {
+            logger.info("Communication return value={} state={}", valueContainer.getValue(), valueContainer.getState().getName());
+            newState = valueContainer.getState();
+        } else {
+            newState = Status.State.BLACK;
+        }
 
         if (!newState.equals(currentState)) {
             // reset datetime
@@ -155,10 +156,13 @@ public class Controller {
             storageManager.writeLog(updatedMachine, remark);
         }
 
-        int counter = valueContainer.getValue();
-        int value = counter * updatedMachine.getMold().getMultiply();
-        machineTableModel.setValueAt(value, row, Machine.Column.ACTUAL.getIndex());
-        machineTableModel.fireTableDataChanged();
+        if (!valueContainer.equals(ValueContainer.EMPTY)) {
+            int counter = valueContainer.getValue();
+            int value = counter * updatedMachine.getMold().getMultiply();
+            machineTableModel.setValueAt(value, row, Machine.Column.ACTUAL.getIndex());
+            machineTableModel.fireTableDataChanged();
+        }
+
     }
 
     public void logMachine() throws IOException, InterruptedException {
