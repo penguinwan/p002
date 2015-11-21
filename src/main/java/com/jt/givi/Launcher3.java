@@ -71,16 +71,16 @@ public class Launcher3 {
                     UpdateMachineTask machine9 = new UpdateMachineTask(controller, 9);
                     UpdateMachineTask machine10 = new UpdateMachineTask(controller, 10);
 
-                    getValueScheduler.scheduleAtFixedRate(machine1, 10, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine2, 12, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine3, 14, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine4, 16, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine5, 18, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine6, 20, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine7, 22, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine8, 24, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine9, 26, configManager.updateMachineInterval, TimeUnit.SECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine10, 28, configManager.updateMachineInterval, TimeUnit.SECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine1, 10000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine2, 12000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine3, 14000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine4, 16000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine5, 18000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine6, 20000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine7, 22000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine8, 24000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine9, 26000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    getValueScheduler.scheduleAtFixedRate(machine10, 28000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
 
                     ScheduledExecutorService logMachineScheduler = Executors.newScheduledThreadPool(1);
                     LogMachineTask logMachine = new LogMachineTask(controller);

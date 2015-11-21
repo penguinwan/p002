@@ -43,7 +43,7 @@ public class ConfigManager {
         serialTimeout = Integer.valueOf(prop.getProperty("serial.timeout.milisecond"));
         sendDelay = Integer.valueOf(prop.getProperty("send.delay.milisecond"));
         storageInterval = Integer.valueOf(prop.getProperty("storage.interval.minute"));
-        updateMachineInterval = Integer.valueOf(prop.getProperty("update.interval.second"));
+        updateMachineInterval = Integer.valueOf(prop.getProperty("update.interval.milisecond"));
         saveMachineStateInterval = Integer.valueOf(prop.getProperty("save.machine.state.interval.second"));
 
         logger.debug("state file={}", stateFilePath);
