@@ -19,6 +19,8 @@ public class ConfigManager {
     public int serialTimeout;
     public int sendDelay;
     public int storageInterval;
+    public int updateMachineInitialDelay;
+    public int updateMachineInitialDelayDifference;
     public int updateMachineInterval;
     public int saveMachineStateInterval;
 
@@ -43,6 +45,8 @@ public class ConfigManager {
         serialTimeout = Integer.valueOf(prop.getProperty("serial.timeout.milisecond"));
         sendDelay = Integer.valueOf(prop.getProperty("send.delay.milisecond"));
         storageInterval = Integer.valueOf(prop.getProperty("storage.interval.minute"));
+        updateMachineInitialDelay = Integer.valueOf(prop.getProperty("update.initial.delay.milisecond"));
+        updateMachineInitialDelayDifference = Integer.valueOf(prop.getProperty("update.initial.delay.difference.milisecond"));
         updateMachineInterval = Integer.valueOf(prop.getProperty("update.interval.milisecond"));
         saveMachineStateInterval = Integer.valueOf(prop.getProperty("save.machine.state.interval.second"));
 
@@ -52,6 +56,8 @@ public class ConfigManager {
         logger.debug("serial timeout={}", serialTimeout);
         logger.debug("send delay={}", sendDelay);
         logger.debug("storage interval={}", storageInterval);
+        logger.debug("update machine initial delay={}", updateMachineInitialDelay);
+        logger.debug("update machine initial delay difference={}", updateMachineInitialDelayDifference);
         logger.debug("update interval={}", updateMachineInterval);
         logger.debug("save machine state interval={}", saveMachineStateInterval);
     }

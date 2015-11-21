@@ -71,16 +71,26 @@ public class Launcher3 {
                     UpdateMachineTask machine9 = new UpdateMachineTask(controller, 9);
                     UpdateMachineTask machine10 = new UpdateMachineTask(controller, 10);
 
-                    getValueScheduler.scheduleAtFixedRate(machine1, 10000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine2, 12000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine3, 14000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine4, 16000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine5, 18000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine6, 20000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine7, 22000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine8, 24000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine9, 26000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
-                    getValueScheduler.scheduleAtFixedRate(machine10, 28000, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay1 = configManager.updateMachineInitialDelay + (0 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine1, initialDelay1, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay2 = configManager.updateMachineInitialDelay + (1 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine2, initialDelay2, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay3 = configManager.updateMachineInitialDelay + (2 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine3, initialDelay3, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay4 = configManager.updateMachineInitialDelay + (3 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine4, initialDelay4, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay5 = configManager.updateMachineInitialDelay + (4 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine5, initialDelay5, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay6 = configManager.updateMachineInitialDelay + (5 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine6, initialDelay6, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay7 = configManager.updateMachineInitialDelay + (6 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine7, initialDelay7, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay8 = configManager.updateMachineInitialDelay + (7 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine8, initialDelay8, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay9 = configManager.updateMachineInitialDelay + (8 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine9, initialDelay9, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
+                    int initialDelay10 = configManager.updateMachineInitialDelay + (9 * configManager.updateMachineInitialDelayDifference);
+                    getValueScheduler.scheduleAtFixedRate(machine10, initialDelay10, configManager.updateMachineInterval, TimeUnit.MILLISECONDS);
 
                     ScheduledExecutorService logMachineScheduler = Executors.newScheduledThreadPool(1);
                     LogMachineTask logMachine = new LogMachineTask(controller);
