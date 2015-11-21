@@ -49,7 +49,7 @@ public class Launcher3 {
                     MasterSetupManager masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
                     StateManager stateManager = new StateManager(configManager.stateFilePath);
                     StorageManager storageManager = new StorageManager(configManager.logFolderPath);
-                    PiCommunicationManager piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay);
+                    PiCommunicationManager piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay, configManager.updateMachineRetry);
 
                     LOGGER.info("Starting...");
                     com.jt.givi.core.Controller controller = new com.jt.givi.core.Controller(masterSetupManager, stateManager, storageManager, piCommunicationManager);

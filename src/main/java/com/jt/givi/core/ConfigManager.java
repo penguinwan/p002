@@ -22,6 +22,7 @@ public class ConfigManager {
     public int updateMachineInitialDelay;
     public int updateMachineInitialDelayDifference;
     public int updateMachineInterval;
+    public int updateMachineRetry;
     public int saveMachineStateInterval;
 
     public ConfigManager() throws IOException, NumberFormatException {
@@ -48,6 +49,7 @@ public class ConfigManager {
         updateMachineInitialDelay = Integer.valueOf(prop.getProperty("update.initial.delay.milisecond"));
         updateMachineInitialDelayDifference = Integer.valueOf(prop.getProperty("update.initial.delay.difference.milisecond"));
         updateMachineInterval = Integer.valueOf(prop.getProperty("update.interval.milisecond"));
+        updateMachineRetry = Integer.valueOf(prop.getProperty("update.retry"));
         saveMachineStateInterval = Integer.valueOf(prop.getProperty("save.machine.state.interval.second"));
 
         logger.debug("state file={}", stateFilePath);
@@ -59,6 +61,7 @@ public class ConfigManager {
         logger.debug("update machine initial delay={}", updateMachineInitialDelay);
         logger.debug("update machine initial delay difference={}", updateMachineInitialDelayDifference);
         logger.debug("update interval={}", updateMachineInterval);
+        logger.debug("update retry={}", updateMachineRetry);
         logger.debug("save machine state interval={}", saveMachineStateInterval);
     }
 }

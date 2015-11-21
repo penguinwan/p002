@@ -157,7 +157,7 @@ public class Frame extends javax.swing.JFrame {
                     MasterSetupManager masterSetupManager = new MasterSetupManager(configManager.masterFilePath);
                     StateManager stateManager = new StateManager(configManager.stateFilePath);
                     StorageManager storageManager = new StorageManager(configManager.logFolderPath);
-                    PiCommunicationManager piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay);
+                    PiCommunicationManager piCommunicationManager = new PiCommunicationManager(configManager.serialTimeout, configManager.sendDelay, configManager.updateMachineRetry);
 
                     Controller controller = new Controller(masterSetupManager, stateManager, storageManager, piCommunicationManager);
                     MasterSetupTableModel masterSetupTableModel = controller.getMasterSetupTableModel();

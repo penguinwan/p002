@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by superman on 7/24/2015.
@@ -29,19 +28,21 @@ public class PiCommunicationManager implements IPiCommunicationManager {
     private GpioPinDigitalOutput pin04;
     private int timeout;
     private int sendDelay;
+    private int retry;
     private boolean disablePi = false;
     private BlockingQueue<Envelope> dataQueue;
 
-    public PiCommunicationManager(int timeout, int sendDelay) {
+    public PiCommunicationManager(int timeout, int sendDelay, int retry) {
+        this.timeout = timeout;
+        this.sendDelay = sendDelay;
+        this.retry = retry;
+        this.dataQueue = new LinkedBlockingQueue<>();
+
         String skipPi = System.getProperty("skipPi");
         if (skipPi != null && skipPi.equalsIgnoreCase("true")) {
             disablePi = true;
         }
         if (!this.disablePi) {
-            this.timeout = timeout;
-            this.sendDelay = sendDelay;
-            this.dataQueue = new LinkedBlockingQueue<>();
-
             Listener dataListener = new Listener(this.dataQueue);
             serial = SerialFactory.createInstance();
             serial.addListener(dataListener);
@@ -88,7 +89,7 @@ public class PiCommunicationManager implements IPiCommunicationManager {
 
     @Override
     public ValueContainer getValue(int machineNo)
-            throws InterruptedException, TimeoutException {
+            throws InterruptedException {
         logger.info("Requesting machine value...");
         if (!disablePi) {
             logger.debug("Setting GPIO pin 04 to high...");
@@ -103,7 +104,7 @@ public class PiCommunicationManager implements IPiCommunicationManager {
             logger.debug("Setting GPIO pin 04 to low...");
             pin04.low();
 
-            Envelope envelope = dataQueue.poll(timeout, TimeUnit.MILLISECONDS);
+            Envelope envelope = pollWithRetry();
             if(envelope != null) {
                 logger.info("Processing data... {}", envelope.data);
                 ResponseParser parser = new ResponseParser(envelope.data);
@@ -117,6 +118,17 @@ public class PiCommunicationManager implements IPiCommunicationManager {
         } else {
             return new ValueContainer(1, 100, Status.State.GREEN);
         }
+    }
+
+    protected Envelope pollWithRetry() throws InterruptedException {
+        int retryCount = 0;
+        Envelope envelope;
+        do {
+            logger.debug("Waiting for data... Trial={}", retryCount);
+            envelope = dataQueue.poll(timeout, TimeUnit.MILLISECONDS);
+            retryCount++;
+        } while (retryCount < retry && envelope == null);
+        return envelope;
     }
 
 
