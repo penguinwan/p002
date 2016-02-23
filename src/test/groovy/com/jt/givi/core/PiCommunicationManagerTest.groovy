@@ -30,24 +30,18 @@ class PiCommunicationManagerTest {
     void testPollWithRetry_secondRetrySuccess() {
         def piComMgr = new PiCommunicationManager(5000, 0, 3)
         def received
-        Runnable startPolling = new Runnable() {
-            @Override
-            void run() {
-                println "starting polling..."
-                received = piComMgr.pollWithRetry()
-                println "received ${received}"
-            }
-        }
+        def startPolling = {
+            println "starting polling..."
+            received = piComMgr.pollWithRetry()
+            println "received ${received}"
+        } as Runnable
 
-        Runnable putData = new Runnable() {
-            @Override
-            void run() {
-                println "starting..."
-                Thread.sleep(3000)
-                println "put data..."
-                piComMgr.dataQueue.put(new PiCommunicationManager.Envelope())
-            }
-        }
+        def putData = {
+            println "starting..."
+            Thread.sleep(3000)
+            println "put data..."
+            piComMgr.dataQueue.put(new PiCommunicationManager.Envelope())
+        } as Runnable
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
         scheduler.schedule(startPolling, 0, TimeUnit.MILLISECONDS)
@@ -61,23 +55,17 @@ class PiCommunicationManagerTest {
     void testPollWithRetry_firstSuccess() {
         def piComMgr = new PiCommunicationManager(5000, 0, 3)
         def received
-        Runnable startPolling = new Runnable() {
-            @Override
-            void run() {
-                println "starting polling..."
-                received = piComMgr.pollWithRetry()
-                println "received ${received}"
-            }
-        }
+        def startPolling = {
+            println "starting polling..."
+            received = piComMgr.pollWithRetry()
+            println "received ${received}"
+        } as Runnable
 
-        Runnable putData = new Runnable() {
-            @Override
-            void run() {
-                println "starting..."
-                println "put data..."
-                piComMgr.dataQueue.put(new PiCommunicationManager.Envelope())
-            }
-        }
+        def putData = {
+            println "starting..."
+            println "put data..."
+            piComMgr.dataQueue.put(new PiCommunicationManager.Envelope())
+        } as Runnable
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
         scheduler.schedule(startPolling, 0, TimeUnit.MILLISECONDS)
